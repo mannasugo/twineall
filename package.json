@@ -3,5 +3,17 @@
   "version": "1.0.0",
   "dependecies": {
     "cookie": "^0.3.1"
-  }
-  }
+  },
+  "description": "A lightweight crowd-pooling dating app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github/mannasugo/twineall"
+  },
+  "author": "Norman Asugo",
+  "license": "ISC"
+}
