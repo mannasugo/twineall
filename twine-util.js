@@ -5,7 +5,7 @@ const config = require(`./twine-config`);
 class Util2 {
   
   constructor () {
-    this.A = {};
+    this.A = {}; trttrtrtrtrt
   }
   
 }
