@@ -88,4 +88,4 @@ const UAUtil = (function () {
 	}
 	
 	return UAUtil;
-})();
+})(); 
