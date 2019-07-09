@@ -1,0 +1,44 @@
+[33mcommit c0bc4d769263328cad91217e1d616124a9ef1662[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: mannasugo <mannasugo@gmail.com>
+Date:   Thu Jun 20 12:29:55 2019 +0300
+
+    git trial
+
+[33mcommit a7f9a6dbd6703d73f6daea65880d500fe727f7fe[m
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Fri Jun 14 10:57:55 2019 +0300
+
+    Added twine database init variables
+
+[33mcommit 44884a77320d5da4b87b442d3c64af14074d277c[m
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Fri Jun 14 10:27:03 2019 +0300
+
+    Create twine-config.js
+
+[33mcommit e57f5b012685363ab314f3248ae014356d9feba7[m
+Merge: 764f1ed 3896daa
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Fri Jun 14 10:15:58 2019 +0300
+
+    Merge pull request #1 from mannasugo/mannasugo-patch-1
+    
+    twine-util-dev.js
+
+[33mcommit 3896daa6e2fb83c969c1ac03219ba9032778e588[m[33m ([m[1;31morigin/mannasugo-patch-1[m[33m)[m
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Sat Jun 8 13:37:16 2019 +0300
+
+    Create twine-util.js
+
+[33mcommit 764f1ed374191b3d99973b32ef27640fe81101eb[m
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Sat Jun 8 13:02:30 2019 +0300
+
+    Update package.json
+
+[33mcommit 4542dc42a4a99df0b76c4fa6a7f46e416eba9615[m
+Author: Mann Asugo <mannasugo@gmail.com>
+Date:   Sat Jun 8 12:22:56 2019 +0300
+
+    initial commit
