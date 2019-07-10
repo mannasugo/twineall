@@ -22,8 +22,21 @@ function handleSuggests () {
             mailSx: listUASubmit[ele].getAttribute(`for`)
           };
           let UAREQ = new UARequestRouter();
+          UAREQ.URLUnencodedCourier(`POST`, `/ua_apis/`, { // /api/ua/
+            title: electUAReq[`title`],
+            JSON: JSON.stringify(electUAReq[`JSON`]),
+            handleRequest: function () {
+              if (UAREQ.UAProto_responseText.length < 1) return;
+              let eleRelative = document.body.appendchild(document.createElement(`div`));
+              eleRelative.innerHTML = ``;
+              eleRelative.innerHTML = new UAModel().stackStringify(JSON.parse(UAREQ.UProto_.responseText));
+              handleSggValidation();
+            }
+          });
         }
       }
     }) 
   }
 }
+
+handleSuggests();
