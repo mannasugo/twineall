@@ -26,5 +26,31 @@ const UAModel = (function () {
   function UAModel () {
     this.appendString = ``;
   }
-});
+  
+  UAModel.prototype = {
+    
+    stackStringify: function (stack) {
+      if (typeof stack !== `object`) return;
+      stack.forEach(cluster => {
+        let a = cluster.tag;
+        let z = a;
+        if (cluster.tag_) a = cluster.tag_;
+        this.appendString += `<` + a;
+        if (cluster.flags) {
+          for (let flag in cluster.flags) {
+            this.appendString += ` ${flag}='${cluster.flags[flag]}'`;
+          }
+        }
+        this.appendString += `>`;
+        if (cluster.closure) this.appendString += cluster.closure;
+        if (cluster.tagChild) this.stackStringify(cluster.tagChild);
+        let queer = [`img`, `input`, `meta`];
+        if (queer.indexOf(cluster.tag) === -1) this.appendString += `</${z}>`;  
+      });
+      return this.appendString;
+    }
+  }
+  
+  return UAModel;
+})();
 
