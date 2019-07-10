@@ -54,3 +54,27 @@ const UAModel = (function () {
   return UAModel;
 })();
 
+const UAUtil = (function () {
+  
+  function UAUtil () {}
+  
+  UAUtil.prototype = {
+    
+    longMailTrim: function (longMail) {
+      if (!longMail || longMail.length < 1 || longMail.match(/^(\s+)$/)) return;
+      return longMail;
+    },
+    
+    limitTrim: function (mail) {
+      if (mail.length === 0 || mail.match(/^(\s+)$/) || mail.length > 30) return;
+      return mail;
+    },
+    
+    WSTrim: function (mail) {
+      mail = mail.replace(/\s/g, ``);
+      return mail;
+    }
+  }
+  
+  return UAUtil;
+})();
