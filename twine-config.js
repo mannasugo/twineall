@@ -1,7 +1,12 @@
 let atrium = `public/gp`;
+let mimeTitle = `Content-Type`;
 
 module.exports = {
   CSSDeck: `${atrium}/css`,
+  electCSSTrims: {'{ ': /\s*{/g, '{': /{\s*/g, ';': /;\s*/g, ' }': /\s*}/g, '}': /}\s*/g},
+  electMimeTypes: {
+    html: {mimeTitle: `text/html`}
+  },
   SQLPassConfig: {
     h: localhost,
     u: root,
