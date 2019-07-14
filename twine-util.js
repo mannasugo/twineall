@@ -39,8 +39,10 @@ class UACallsPublic extends Util2 {
     this.UA = {req: request, res: response};
   }
   
-  if (this.levelState === ``) this.handleRootCall();
-  
+  handleUACalls () {
+    if (this.levelState === ``) this.handleRootCall();
+  }
+
   handleRootCall () {
     let SString = config.CSSDeck, electModel, jar, modelMapping;
     if (this.UA.req.headers.cookie) jar = cookie.parse(this.UA.req.headers.cookie);
@@ -74,3 +76,9 @@ class UACallsPublic extends Util2 {
     });
   }
 }
+
+module.exports = {
+  UAPublic (level, req, res) {
+    new UACallsPublic(level, req, res).handleUACalls();
+  }
+};
