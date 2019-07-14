@@ -6,7 +6,7 @@ const Util = require(`./twine-util`);
 class RouteControl {
   
   router (req, res) {
-  	let url = (`./${req.url}`).replace(`//`, `/`).replace(/%(..)/g, function (match, hex) {
+    let url = (`./${req.url}`).replace(`//`, `/`).replace(/%(..)/g, function (match, hex) {
   		return String.fromCharCode(parseInt(hex, 16))
   	});
 
