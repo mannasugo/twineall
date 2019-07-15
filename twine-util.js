@@ -41,6 +41,15 @@ class SQL {
       database: config.SqlConfig.d,
       multipleStatements: true});
   }
+
+  SqlSource () {
+    this.iniSql.query(config.SqlQuery.twine, () => {
+      this.multiSql.query(
+        `${config.SqlQuery.tempusers};${config.SqlQuery.users};${config.SqlQuery.usermeta}`);
+      this.multiSql.end();
+    });
+    this.iniSql.end();
+  }
 }
 
 class UACallsPublic extends Util2 {
@@ -92,5 +101,8 @@ class UACallsPublic extends Util2 {
 module.exports = {
   UAPublic (level, req, res) {
     new UACallsPublic(level, req, res).handleUACalls();
+  }
+  Mysql () {
+    new SQL().SqlSource();
   }
 };

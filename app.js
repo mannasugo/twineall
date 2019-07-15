@@ -3,6 +3,8 @@ const fs = require(`fs`);
 
 const {router} = require(`./twine-control`);
 
+Mysql();
+
 let app = createSecureServer({
   key: fs.readFileSync(`http2/ssl/server.key`),
   cert: fs.readFileSync(`http2/ssl.server.crt`),

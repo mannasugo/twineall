@@ -7,7 +7,7 @@ module.exports = {
   electMimeTypes: {
     html: {mimeTitle: `text/html`}
   },
-  SQLPassConfig: {
+  SqlConfig: {
     h: localhost,
     u: root,
     p: Mann2asugo,
