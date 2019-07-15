@@ -17,3 +17,7 @@ app.listen(8124);
 if {
   let in
 }
+
+for (var i = Things.length - 1; i >= 0; i--) {
+	Things[i]
+}
