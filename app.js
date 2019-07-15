@@ -13,19 +13,3 @@ let app = createSecureServer({
 
 app.on(`error`, (err) => console.error(err));
 app.listen(8124);
-
-if {
-  let in
-}
-
-for (var i = Things.length - 1; i >= 0; i--) {
-	Things[i]
-}
-
-if (true) {
-	break
-}
-
-for (var i = 0; i < Things.length; i++) {
-  Things[i]
-}

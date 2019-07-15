@@ -27,7 +27,19 @@ class SQL {
   constructor () {
     this.iniSql = mysql.createConnection({
       host: config.SqlConfig.h,
-    });
+      user: config.SqlConfig.u,
+      password: config.SqlConfig.p});
+    this.uniSql = mysql.createConnection({
+      host: config.SqlConfig.h,
+      user: config.SqlConfig.u,
+      password: config.SqlConfig.p,
+      database: config.SqlConfig.d});
+    this.multiSql = mysql.createConnection({
+      host: config.SqlConfig.h,
+      user: config.SqlConfig.u,
+      password: config.SqlConfig.p,
+      database: config.SqlConfig.d,
+      multipleStatements: true});
   }
 }
 
