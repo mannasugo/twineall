@@ -2,16 +2,17 @@ let atrium = `public/gp`;
 let mimeTitle = `Content-Type`;
 
 module.exports = {
-  CSSDeck: `${atrium}/css`,
+  CSSDeck: `${atrium}/css/`,
   electCSSTrims: {'{ ': /\s*{/g, '{': /{\s*/g, ';': /;\s*/g, ' }': /\s*}/g, '}': /}\s*/g},
+  nullZoomCSS: `width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no`,
   electMimeTypes: {
     html: {mimeTitle: `text/html`}
   },
   SqlConfig: {
-    h: localhost,
-    u: root,
-    p: Mann2asugo,
-    d: twine,
+    h: `localhost`,
+    u: `root`,
+    p: `Mann2asugo`,
+    d: `twine`,
   },
   SqlQuery: {
     twine: `create database if not exists twine`,

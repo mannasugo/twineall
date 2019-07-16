@@ -48,6 +48,32 @@ module.exports = {
     return this.modelStringify(this.skeletal(mapping));
   },
 
+  welcome () {
+    return {};
+  },
+
+  cookieModel (mapping) {
+    return [{
+      tag: `span`, flags: {id: `root`}, tagChild: [{tag: `span`: flags: {id: `skin-root`}, tagChild: mapping.appendModel}] 
+    }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('UAlet', '${mapping.UACookie}')`}, {
+      tag: `scipt`, flags: {src: `/public/gp/js/twine-sdk.js`}
+    }];
+  },
+
+  controlsModel () {
+    return {};
+  },
+
+  contentModel (mapping) {
+    return {
+      tag: `main`, flags: {class: `_bMG`, style: `max-width: 100%`}, tagChild: [{
+        tag: `section`, flags: {class: `_aGX`}, tagChild: [{
+          tag: `span`, flags: {class: `_CSa`}, tagChild: mapping.appendModel
+        }]
+      }]
+    };
+  },
+
   chatOverview () {
     return {};
   }

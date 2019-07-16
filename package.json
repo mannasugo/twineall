@@ -1,7 +1,7 @@
 {
   "name": "twineall",
   "version": "1.0.0",
-  "dependecies": {
+  "dependencies": {
     "cookie": "^0.3.1",
     "mysql": "^2.16.0"
   },

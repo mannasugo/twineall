@@ -27,8 +27,6 @@ class RouteControl {
 
 module.exports = {
   router (req, res) {
-    new RouteControl().router(req, res); //space & tab
+    new RouteControl().router(req, res);
   }
-
-  //lets see if this works
 }
