@@ -27,8 +27,28 @@ class ModelString {
 }
 
 module.exports = {
+
+  modelStringify (model) {
+    return new ModelString().modelStringify(model);
+  },
+
+  skeletal (mapping) {
+    return [{
+      tag: `html`, tag_: `!doctype html><html`, flags: {lang: `en`}, tagChild: [{
+        tag: `head`, tagChild: [
+          {tag: `meta`, flags: {charset: `utf-8`}},
+          {tag: `title`, closure: mapping.title}, {tag: `meta`, flags: {
+            name: `viewport`, content: `width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no`}
+          }, {tag: `style`, flags: {type: `text/css`}, closure: mapping.styleText}]
+      }, {tag: `body`, tagChild: mapping.appendModel}]
+    }];
+  },
   
   callFrame (mapping) {
     return this.modelStringify(this.skeletal(mapping));
+  },
+
+  chatOverview () {
+    return {};
   }
 };
