@@ -87,9 +87,10 @@ class UACallsPublic extends Util2 {
       if (jar && jar.UAAuthorized) {
         modelMapping[`appendModel`] = [modeler.chatOverview()];
         modelMapping[`appendModel`] = [modeler.controls(), modeler.contentFrame(modelMapping[`appendModel`])];
+        modelMapping[`appendModel`] = modeler.cookieModel(modelMapping[`appendModel`]);
         electModel = modeler.callFrame(modelMapping);
       } else {
-        modelMapping[`appendModel`] = [modeler.prompt()];
+        modelMapping[`appendModel`] = [modeler.welcome()];
         electModel = modeler.callFrame(modelMapping);
       }
       UA.res.writeHead(200, config.electMimeTypes.html);
@@ -101,7 +102,7 @@ class UACallsPublic extends Util2 {
 module.exports = {
   UAPublic (level, req, res) {
     new UACallsPublic(level, req, res).handleUACalls();
-  }
+  },
   Mysql () {
     new SQL().SqlSource();
   }
