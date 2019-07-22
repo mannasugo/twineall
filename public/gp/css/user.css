@@ -1,0 +1,9 @@
+.electiconUA, .mugiconUA, .poolsiconUA, .rooticonUA, .twineiconUA {
+  background-image: url(/public/gp/css/sprite/canvas.png);
+}
+
+.electiconUA, .mugiconUA, .poolsiconUA, .rooticonUA, .twineiconUA {
+  background-repeat: no-repeat;
+  height: 24px;
+  width: 24px;
+}

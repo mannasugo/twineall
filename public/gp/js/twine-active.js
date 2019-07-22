@@ -30,13 +30,17 @@ function handleSuggests () {
               let eleRelative = document.body.appendchild(document.createElement(`div`));
               eleRelative.innerHTML = ``;
               eleRelative.innerHTML = new UAModel().stackStringify(JSON.parse(UAREQ.UProto_.responseText));
-              handleSggValidation();
+              validateElect();
             }
           });
         }
       }
     }) 
   }
+}
+
+function validateElect () {
+
 }
 
 handleSuggests();

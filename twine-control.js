@@ -20,7 +20,7 @@ class RouteControl {
     }
 
     if (level === 2 && lastChar !== `/` || level === 3 && lastChar === `/`) {
-      Util.UAPublic(levelState, re, res);
+      Util.UAPublic(levelState, req, res);
     }
   }
 }

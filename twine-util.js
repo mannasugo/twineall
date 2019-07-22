@@ -86,9 +86,10 @@ class UACallsPublic extends Util2 {
       
       if (jar && jar.UAAuthorized) {
         modelMapping[`appendModel`] = [modeler.chatOverview()];
-        modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping[`appendModel`])];
-        modelMapping[`appendModel`] = modeler.cookieModel(modelMapping[`appendModel`]);
-        electModel = modeler.callFrame(modelMapping);
+        modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
+        modelMapping[`UACookie`] = jar.UAAuthorized;
+        modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
+        electModel = modeler.callFrame(modelMapping); console.log(electModel)
       } else {
         modelMapping[`appendModel`] = [modeler.welcome()];
         electModel = modeler.callFrame(modelMapping);
