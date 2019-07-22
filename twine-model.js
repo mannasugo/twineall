@@ -6,14 +6,14 @@ class ModelString {
   
   modelStringify (model) {
     if (typeof model !== `object`) return;
-    model.forEach( function (miniModel) {
+    model.forEach(miniModel => {
       let a = miniModel.tag;
       let z = a;
       if (miniModel.tag_) a = miniModel.tag_;
       this.appendString += `<` + a;
       if (miniModel.flags) {
         for (let flag in miniModel.flags) {
-          this.appendString += ` ` + flag + `='` + miniModel.flags[`flag`] + `'`;
+          this.appendString += ` ` + flag + `='` + miniModel.flags[flag] + `'`;
         }
       }
       this.appendString += `>`;
@@ -28,7 +28,7 @@ class ModelString {
 
 module.exports = {
 
-  modelStringify (model) {
+  modelString (model) {
     return new ModelString().modelStringify(model);
   },
 
@@ -45,7 +45,7 @@ module.exports = {
   },
   
   callFrame (mapping) {
-    return this.modelStringify(this.skeletal(mapping));
+    return this.modelString(this.skeletal(mapping));
   },
 
   welcome () {
@@ -54,14 +54,27 @@ module.exports = {
 
   cookieModel (mapping) {
     return [{
-      tag: `span`, flags: {id: `root`}, tagChild: [{tag: `span`: flags: {id: `skin-root`}, tagChild: mapping.appendModel}] 
+      tag: `span`, flags: {id: `root`}, tagChild: [{tag: `span`, flags: {id: `skin-root`}, tagChild: mapping.appendModel}] 
     }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('UAlet', '${mapping.UACookie}')`}, {
       tag: `scipt`, flags: {src: `/public/gp/js/twine-sdk.js`}
     }];
   },
 
   controlsModel () {
-    return {};
+    let listOptionsModel = [], listOptions = [`root`, `elect`, `twine`, `pools`, `mug`];
+    listOptions.forEach((Option, index) => {
+      listOptionsModel[index] = {tag: `div`, flags: {class: `_nFa`}, tagChild: [{
+        tag: `a`, flags: {class: `_tTB ${Option}iconUA`, href: Option}, closure: Option }]};
+    }); 
+    return {
+      tag: `div`, flags: {class: `_gDa`}, tagChild: [{
+        tag: `div`, flags: {class: `_STa`}, tagChild: [{
+          tag: `div`, flags: {class: `_gDE`}, tagChild: [{
+            tag: `div`, flags: {class: `_gyQ`}, tagChild: listOptionsModel
+          }]
+        }]
+      }]
+    };
   },
 
   contentModel (mapping) {
