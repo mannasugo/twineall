@@ -1,3 +1,62 @@
+._gDa {
+  -webkit-flex-basis: 52px;
+  -ms-flex-preferred-size: 52px;
+  flex-basis: 52px;
+  height: 100%;
+}
+
+._STa {
+  background-color: #fff;
+  width: 52px;
+  position: fixed;
+  left: 0;
+  height: 100%;
+  z-index: 1;
+  background-clip: border-box;
+  box-shadow: 1px 0 3px rgba(26,26,26, .1);
+  background-clip: content-box;
+}
+
+._gDE {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
+}
+
+._gyQ {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+._nFa {
+  margin-top: 30px;
+}
+
+._tTB {
+  display: block;
+  overflow: hidden;
+  text-indent: 110%;
+  white-space: nowrap;
+}
+
 .electiconUA, .mugiconUA, .poolsiconUA, .rooticonUA, .twineiconUA {
   background-image: url(/public/gp/css/sprite/canvas.png);
 }
@@ -6,4 +65,24 @@
   background-repeat: no-repeat;
   height: 24px;
   width: 24px;
+}
+
+.electiconUA {
+  background-position: -290px -120px;
+}
+
+.mugiconUA {
+  background-position: -102px -120px;
+}
+
+.poolsiconUA {
+  background-position: -38px -120px;
+}
+
+.rooticonUA {
+  background-position: -258px -120px;
+}
+
+.twineiconUA {
+  background-position: -320px -120px;
 }
