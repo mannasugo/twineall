@@ -89,5 +89,37 @@ module.exports = {
 
   chatOverview () {
     return {};
+  },
+
+  electsModel (listSex) {
+    let electsAppendModel = [];
+    for (let sex in listSex) {
+      electsAppendModel[sex] = {
+        tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+          tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+            tag: `span`, flags: {class: `_txM`}, closure: `Suggest New ` + listSex[sex] + ` Member`
+          }]
+        }, {
+          tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+            tag: `div`, tagChild: [{
+              tag: `input`, flags: {class: `_txQ`, placeholder: `email`, type: `text`}
+            }]
+          }, {
+            tag: `div`, tagChild: [{
+              tag: `div`, tagChild: [{
+                tag: `input`, flags: {class: `_txQ`, placeholder: `name`, type: `text`}
+              }]
+            }]
+          }]
+        }, {
+          tag: `div`, flags: {class: `_gC_`}, tagChild: [{
+            tag: `div`, flags: {class: `_FFe`}, tagChild: [{
+              tag: `button`, flags: {for: listSex[sex], class: `_bsZ`}, closure: `Suggest`
+            }]
+          }]
+        }]
+      };
+    }
+    return electsAppendModel;
   }
 };

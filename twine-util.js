@@ -50,6 +50,13 @@ class SQL {
     });
     this.iniSql.end();
   }
+
+  SqlMono (sqlVar, callback) {
+    this.uniSql.query({
+      sql: config.SqlQuery.getMono,
+      values: [sqlVar]
+    }, (A, B, C) => {callback(A, B, C)});
+  }
 }
 
 class UACallsPublic extends Util2 {
@@ -62,6 +69,8 @@ class UACallsPublic extends Util2 {
   
   handleUACalls () {
     if (this.levelState === ``) this.handleRootCall();
+
+    if (this.levelState === `elect`) this.handleElectCall();
   }
 
   handleRootCall () {
@@ -96,6 +105,39 @@ class UACallsPublic extends Util2 {
       }
       UA.res.writeHead(200, config.electMimeTypes.html);
       UA.res.end(electModel);
+    });
+  }
+
+  handleElectCall () {
+    if (!this.UA.req.headers.cookie) return;
+    let jar = cookie.parse(this.UA.req.headers.cookie);
+    if (!jar.UAAuthorized) return;
+
+    let modelMapping, electModel;
+
+    const UA = this.UA;
+
+    this.modelStyler(config.CSSDeck + `user.css`, styleString => {
+      new SQL().SqlMono(`suggests_` + jar.UAAuthorized, (A, B, C) => {
+
+        modelMapping = {
+          title: `twineall - Nominate Member`,
+          styleText: styleString,
+          UACookie: jar.UAAuthorized,
+          appendModel: ``,
+        };
+
+        if (B.length > 0) {
+
+        } else {
+          modelMapping[`appendModel`] = modeler.electsModel([`male`, `female`]);
+          modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
+          modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
+          electModel = modeler.callFrame(modelMapping); console.dir(electModel)
+        }
+        UA.res.writeHead(200, config.electMimeTypes.html);
+        UA.res.end(electModel);
+      });
     });
   }
 }
