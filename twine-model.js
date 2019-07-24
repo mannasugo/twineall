@@ -56,7 +56,8 @@ module.exports = {
     return [{
       tag: `span`, flags: {id: `root`}, tagChild: [{tag: `span`, flags: {id: `skin-root`}, tagChild: mapping.appendModel}] 
     }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('UAlet', '${mapping.UACookie}')`}, {
-      tag: `scipt`, flags: {src: `/public/gp/js/twine-sdk.js`}
+      tag: `scipt`, flags: {src: `/public/gp/js/twine-sdk.js`}}, {
+        tag: `scipt`, flags: {src: `/public/gp/js/twine-active.js`}
     }];
   },
 

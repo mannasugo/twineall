@@ -86,3 +86,93 @@
 .twineiconUA {
   background-position: -320px -120px;
 }
+
+._bMG {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-box-ordinal-group: 5;
+  -webkit-order: 4;
+  -ms-flex-order: 4;
+  order: 4;
+}
+
+._aGX {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 600px;
+  position: relative;
+  width: 100%;
+}
+
+._CSa {
+  padding: 16px 0;
+}
+
+._gC_, ._gC_a {
+  padding: 12px 15px;
+}
+
+._gMB + ._gMB, ._gC_a + ._gC_a {
+  border-top: .5px solid #eee;
+}
+
+._txM {
+  color: #000;
+  font-size: 18px;
+  line-height: 24px;
+  text-transform: uppercase;
+}
+
+._txQ {
+  border: 0;
+  border-bottom: 1px solid #ebeef5;
+  padding: 14px;
+  width: 100%;
+  line-height: 20px;
+  font-size: 14px;
+  background-color: transparent;
+  color: #555;
+  box-sizing: border-box;
+  box-shadow: none;
+  background-color: #fff;
+}
+
+._FFe {
+
+}
+
+._bsZ {
+  border: 1px solid;
+  color: #fff;
+  line-height: 1;
+  white-space: nowrap;
+  background: none;
+  -webkit-appearance: none;
+  outline: none;
+  border-radius: 100px;
+  display: block;
+  padding: 13px 0;
+  width: 100%;
+  background-color: #1185fe;
+  border-color: #1185fe;
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  ._gHm {
+    background-color: #fff;
+  }
+
+  ._gHm {
+    border-radius: 4px;
+  }
+
+  ._gHm + ._gHm {
+    margin-top: 8px
+  }
+}
