@@ -56,8 +56,8 @@ module.exports = {
     return [{
       tag: `span`, flags: {id: `root`}, tagChild: [{tag: `span`, flags: {id: `skin-root`}, tagChild: mapping.appendModel}] 
     }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('UAlet', '${mapping.UACookie}')`}, {
-      tag: `scipt`, flags: {src: `/public/gp/js/twine-sdk.js`}}, {
-        tag: `scipt`, flags: {src: `/public/gp/js/twine-active.js`}
+      tag: `script`, flags: {src: `/public/gp/js/twine-sdk.js`}}, {
+        tag: `script`, flags: {src: `/public/gp/js/twine-active.js`}
     }];
   },
 
@@ -122,5 +122,19 @@ module.exports = {
       };
     }
     return electsAppendModel;
+  },
+
+  immerseModel (mapping) {
+    return [{
+      tag: `div`, flags: {class: `_UQe`, flag: `hover`}, tagChild: [{
+        tag: `div`, flags: {class: `_HUa`}
+      }, {
+        tag: `div`, flags: {class: `_UfX`, flag: `smallScreen`}, tagChild: [{
+          tag: `div`, flags: {class: `_GXc`}, tagChild: [{
+            tag: `section`, flags: {class: `_aGX`}, tagChild: mapping.appendModel
+          }]
+        }]
+      }]
+    }];
   }
 };

@@ -7,7 +7,7 @@ function handleSuggests () {
   
   for (let ele = 0; ele < listUASubmit.length; ++ele) {
     listUASubmit[ele].addEventListener(`click`, function () {
-      let electUAReq = {title: `reqSgg`};
+      let electUAReq = {title: `electsQuery`};
       if (listUASubmit[ele].getAttribute(`for`)) {
         let listUAValues = listUASubmit[ele].parentNode.parentNode.parentNode.querySelectorAll(`input`);
         let listTrim = [];
@@ -22,7 +22,7 @@ function handleSuggests () {
             mailSx: listUASubmit[ele].getAttribute(`for`)
           };
           let UAREQ = new UARequestRouter();
-          UAREQ.URLUnencodedCourier(`POST`, `/ua_apis/`, { // /api/ua/
+          UAREQ.URLEncodedCourier(`POST`, `/api/ua/`, {
             title: electUAReq[`title`],
             JSON: JSON.stringify(electUAReq[`JSON`]),
             handleRequest: function () {

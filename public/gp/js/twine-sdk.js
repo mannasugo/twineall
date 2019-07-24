@@ -1,6 +1,9 @@
 `use strict`;
 
 const UARequestRouter = (function () {
+  /**
+  * @constructor
+  */
   
   function UARequestRouter () {
     this.UARouteProtocol = (navigator.msie && intval(navigator.version) < 10) ? window.XDomainRequest : window.XMLHttpRequest;
@@ -8,6 +11,9 @@ const UARequestRouter = (function () {
   }
   
   UARequestRouter.prototype = {
+    /**
+     * @override
+     */
     URLEncodedCourier: function (requestType, URL, requestData) {
       this.UAProto_.open(requestType, URL, true);
       this.UAProto_.setRequestHeader(`Content-Type`, `application/x-www-form-urlencoded`);
@@ -19,7 +25,7 @@ const UARequestRouter = (function () {
   };
   
   return UARequestRouter;
-});
+})();
 
 const UAModel = (function () {
   

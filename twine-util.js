@@ -142,9 +142,45 @@ class UACallsPublic extends Util2 {
   }
 }
 
+class UAStreamQuery {
+
+  constructor (QString, request, response) {
+    this.qString = QString;
+    this.UA = {req: request, res: response};
+  }
+
+  UAStreamQs () {
+    if (this.qString.electsQuery) {
+      this.electsStream(JSON.parse(this.qString.electsQuery));
+    }
+  }
+
+  electsStream (QString) {
+    if (!this.UA.req.headers.cookie) return;
+    let jar = cookie.parse(this.UA.req.headers.cookie);
+    if (!jar.UAAuthorized) return;
+
+    const UA = this.UA;
+    let modelMapping = {
+      appendModel: [modeler.electsValidModel(QString)]
+    };
+
+    UA.res.setHeader(`Set-Cookie`, cookie.serialize(`electsQString`, JSON.stringify(QString), {
+      httpOnly: true,
+      path: `/`,
+      secure: true
+    }));
+    UA.res.writeHead(200, config.electMimeTypes.html);
+    UA.res.end(JSON.stringify(modeler.immerseModel(modelMapping)));
+  }
+}
+
 module.exports = {
   UAPublic (level, req, res) {
     new UACallsPublic(level, req, res).handleUACalls();
+  },
+  UAStream (QString, req, res) {
+    new UAStreamQuery(QString, req, res).UAStreamQs();
   },
   Mysql () {
     new SQL().SqlSource();

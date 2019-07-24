@@ -19,6 +19,13 @@ class RouteControl {
       Util.UAPublic(``, req, res);
     }
 
+    if (req.method === `POST` && req.url === `/api/ua/`) {
+      let endData = ``;
+      req.on(`data`, (data) => {
+        endData += data;
+      }).on(`end`, () => {Util.UAStream(parse(endData), req, res)});
+    }
+
     if (level === 2 && lastChar !== `/` || level === 3 && lastChar === `/`) {
       Util.UAPublic(levelState, req, res);
     }

@@ -140,6 +140,7 @@
   box-sizing: border-box;
   box-shadow: none;
   background-color: #fff;
+  outline: none;
 }
 
 ._FFe {
