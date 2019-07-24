@@ -136,5 +136,35 @@ module.exports = {
         }]
       }]
     }];
+  },
+
+  electsValidModel (electQString) {
+    return {
+      tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `div`, flags: {class: `eYG`}, tagChild: [{
+            tag: `div`, flags: {class: `_QxM`}, tagChild: [{
+              tag: `span`, flags: {class: `_TZx _TXs`}, closure: electQString.mailTo
+            }]
+          }, {
+            tag: `span`, flags: {class: `_uHt`}, closure: `suggested by you`
+          }]
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `span`: flags: {class: `_TZx _TXs`}, closure: electQString.mail
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `span`, flags: {class: `_TZx _TXs`}, closure: electQString.mailSx
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `div`, flags: {class: `_FFe`}, tagChild: [{
+            tag: `button`, flags: {class: `_bsZ`}, closure: `Validate`
+          }]
+        }]
+      }]
+    };
   }
 };
