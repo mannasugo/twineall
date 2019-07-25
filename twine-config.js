@@ -6,7 +6,8 @@ module.exports = {
   electCSSTrims: {'{ ': /\s*{/g, '{': /{\s*/g, ';': /;\s*/g, ' }': /\s*}/g, '}': /}\s*/g},
   nullZoomCSS: `width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no`,
   electMimeTypes: {
-    html: {mimeTitle: `text/html`}
+    html: {mimeTitle: `text/html`},
+    json: {mimeTitle: `application/json`}
   },
   SqlConfig: {
     h: `localhost`,
@@ -20,5 +21,10 @@ module.exports = {
     users: `create table if not exists users (altid TEXT not null, btime TEXT not null, idsum VARCHAR(320) not null)`,
     usermeta: `create table if not exists usermeta (bio TEXT not null,chain VARCHAR(320) not null,idsum VARCHAR(320) not null,mail TEXT not null,mug TEXT not null,pass TEXT not null)`,
     getMono: `select * from ??`,
+    getElects: `select * from suggests_{id}`,
+    equateElectsSex: `select * from suggests_{id} where sex='{idSex}'`,
+    equateMail: `select * from temp_users where mail='{idMail}'`,
+    getChain: `select chain from temp_users where idsum='{id}'`,
+    getPlus: `select * from ?? where ?? = ?`,
   }
 }

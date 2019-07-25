@@ -26,11 +26,11 @@ function handleSuggests () {
             title: electUAReq[`title`],
             JSON: JSON.stringify(electUAReq[`JSON`]),
             handleRequest: function () {
-              if (UAREQ.UAProto_responseText.length < 1) return;
-              let eleRelative = document.body.appendchild(document.createElement(`div`));
+              if (UAREQ.UAProto_.responseText.length < 1) return;
+              let eleRelative = document.body.appendChild(document.createElement(`div`));
               eleRelative.innerHTML = ``;
-              eleRelative.innerHTML = new UAModel().stackStringify(JSON.parse(UAREQ.UProto_.responseText));
-              validateElect();
+              eleRelative.innerHTML = new UAModel().stackStringify(JSON.parse(UAREQ.UAProto_.responseText));
+              electsValid(electUAReq[`JSON`]);
             }
           });
         }
@@ -39,8 +39,12 @@ function handleSuggests () {
   }
 }
 
-function validateElect () {
+function electsValid (elects) {
+  document.addEventListener(`click`, function (e) {
+    if (e.target.nodeName === `BUTTON` && e.target.innerHTML === `Validate`) {
 
+    }
+  });
 }
 
 handleSuggests();

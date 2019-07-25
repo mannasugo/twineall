@@ -152,7 +152,7 @@ module.exports = {
         }]
       }, {
         tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
-          tag: `span`: flags: {class: `_TZx _TXs`}, closure: electQString.mail
+          tag: `span`, flags: {class: `_TZx _TXs`}, closure: electQString.mail
         }]
       }, {
         tag: `div`, flags: {class: `_gC_a`}, tagChild: [{

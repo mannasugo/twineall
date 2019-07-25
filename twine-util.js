@@ -8,7 +8,7 @@ const modeler = require(`./twine-model`);
 class Util2 {
   
   constructor () {
-    this.A = {};
+    this.electSub_ = {};
   }
   
   modelStyler (file, callback) {
@@ -19,12 +19,30 @@ class Util2 {
       return callback(SString);
     });
   }
+
+  literalFormat (literal) {
+    let electSub = {};
+    for (let sub in this.electSub_) {
+      electSub[sub] = this.electSub_;
+    }
+    for (let sub in electSub) {
+      electSub[sub] = new RegExp(`{` + electSub[sub] + `}`, `g`);
+      literal = literal.replace(electSub[sub], sub);
+    }
+    return literal;
+  }
+
+  availElectSub_ (electSub) {
+    this.electSub_ = electSub;
+    return this.electSub_;
+  }
   
 }
 
-class SQL {
+class SQL extends Util2 {
   
   constructor () {
+    super();
     this.iniSql = mysql.createConnection({
       host: config.SqlConfig.h,
       user: config.SqlConfig.u,
@@ -56,6 +74,27 @@ class SQL {
       sql: config.SqlQuery.getMono,
       values: [sqlVar]
     }, (A, B, C) => {callback(A, B, C)});
+  }
+
+  SqlPlus (electSqlVar, callback) {
+    this.uniSql.query({
+      sql: config.SqlQuery.getPlus,
+      values: [electSqlVar.table, electSqlVar.field, electSqlVar.fieldValue]
+    }, (A, B, C) => {callback(A, B, C)});
+  }
+
+  SqlValidateElects (listSqlVar, callback) {
+
+    this.electSub_ = {
+      id: listSqlVar[3],
+      idMail: listSqlVar[1],
+      idSex: listSqlVar[2]};
+
+    this.multiSql.query(this.literalFormat(
+      `${config.SqlQuery.getElects};${config.SqlQuery.equateElectsSex};${config.SqlQuery.equateMail};${config.SqlQuery.getChain}`),
+      (A, B, C) => {callback(A, B, C)}
+    );
+    this.multiSql.end();
   }
 }
 
@@ -170,8 +209,40 @@ class UAStreamQuery {
       path: `/`,
       secure: true
     }));
-    UA.res.writeHead(200, config.electMimeTypes.html);
+    UA.res.writeHead(200, config.electMimeTypes.json);
     UA.res.end(JSON.stringify(modeler.immerseModel(modelMapping)));
+  }
+
+  electsValidStream (QString) {
+    if (!this.UA.req.headers.cookie) return;
+    let jar = cookie.parse(this.UA.req.headers.cookie);
+    if (!jar.UAAuthorized) return;
+
+    const UA = this.UA;
+    let listSqlVar = QString;
+    listSqlVar.append(jar.UAAuthorized);
+
+    new SQL().SqlValidateElects(listSqlVar, (A, B, C) => {
+      if (B[2].length === 0) {
+        if (B[0].length < 2) {
+          if (B[1].length === 0) {
+            if (listSqlVar[2] === `female`) {
+              let altSex = `male`;
+            }
+            if (listSqlVar[2] === `male`) {
+              let altSex = `female`;
+            }
+            if (altSex) return;
+            new SQL().SqlPlus({
+              table: `temp_user`,
+              field: `sex`,
+              fieldValue: altSex}, (A, B, C) => {
+                
+              });
+          }
+        }
+      }
+    });
   }
 }
 
