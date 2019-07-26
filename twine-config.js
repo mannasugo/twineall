@@ -21,10 +21,10 @@ module.exports = {
     users: `create table if not exists users (altid TEXT not null, btime TEXT not null, idsum VARCHAR(320) not null)`,
     usermeta: `create table if not exists usermeta (bio TEXT not null,chain VARCHAR(320) not null,idsum VARCHAR(320) not null,mail TEXT not null,mug TEXT not null,pass TEXT not null)`,
     getMono: `select * from ??`,
-    getElects: `select * from suggests_{id}`,
-    equateElectsSex: `select * from suggests_{id} where sex='{idSex}'`,
+    getElects: `select * from suggests_{refs}`,
+    equateElectsSex: `select * from suggests_{refs} where sex='{idSex}'`,
     equateMail: `select * from temp_users where mail='{idMail}'`,
-    getChain: `select chain from temp_users where idsum='{id}'`,
+    getChain: `select chain from temp_users where idsum='{refs}'`,
     getPlus: `select * from ?? where ?? = ?`,
   }
 }

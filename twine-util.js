@@ -23,17 +23,17 @@ class Util2 {
   literalFormat (literal) {
     let electSub = {};
     for (let sub in this.electSub_) {
-      electSub[sub] = this.electSub_;
+      electSub[sub] = this.electSub_[sub];
     }
     for (let sub in electSub) {
       electSub[sub] = new RegExp(`{` + electSub[sub] + `}`, `g`);
       literal = literal.replace(electSub[sub], sub);
-    }
+    }console.log(literal)
     return literal;
   }
 
   availElectSub_ (electSub) {
-    this.electSub_ = electSub;
+    this.electSub_ = electSub; console.log(this.electSub_)
     return this.electSub_;
   }
   
@@ -85,10 +85,11 @@ class SQL extends Util2 {
 
   SqlValidateElects (listSqlVar, callback) {
 
-    this.electSub_ = {
-      id: listSqlVar[3],
-      idMail: listSqlVar[1],
-      idSex: listSqlVar[2]};
+    this.availElectSub_({
+      [listSqlVar[`mailTo`]]: `id`,
+      [listSqlVar[`mail`]]: `idMail`,
+      [listSqlVar[`mailSx`]]: `idSex`,
+      [listSqlVar[`refs`]]: `refs`}); console.log(listSqlVar)//this.availElectSub_(this.electSub_);
 
     this.multiSql.query(this.literalFormat(
       `${config.SqlQuery.getElects};${config.SqlQuery.equateElectsSex};${config.SqlQuery.equateMail};${config.SqlQuery.getChain}`),
@@ -192,6 +193,10 @@ class UAStreamQuery {
     if (this.qString.electsQuery) {
       this.electsStream(JSON.parse(this.qString.electsQuery));
     }
+
+    if (this.qString.electsValidQ) {
+      this.electsValidStream(JSON.parse(this.qString.electsValidQ));
+    }
   }
 
   electsStream (QString) {
@@ -220,21 +225,22 @@ class UAStreamQuery {
 
     const UA = this.UA;
     let listSqlVar = QString;
-    listSqlVar.append(jar.UAAuthorized);
+    listSqlVar[`refs`] = jar.UAAuthorized;
 
     new SQL().SqlValidateElects(listSqlVar, (A, B, C) => {
       if (B[2].length === 0) {
         if (B[0].length < 2) {
           if (B[1].length === 0) {
-            if (listSqlVar[2] === `female`) {
-              let altSex = `male`;
+            let altSex;
+            if (listSqlVar[`mailSx`] === `female`) {
+              altSex = `male`;
             }
-            if (listSqlVar[2] === `male`) {
-              let altSex = `female`;
+            if (listSqlVar[`mailSx`] === `male`) {
+              altSex = `female`;
             }
-            if (altSex) return;
+            if (!altSex) return;
             new SQL().SqlPlus({
-              table: `temp_user`,
+              table: `temp_users`,
               field: `sex`,
               fieldValue: altSex}, (A, B, C) => {
                 if (B.length > 0) {
