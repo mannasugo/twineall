@@ -237,7 +237,9 @@ class UAStreamQuery {
               table: `temp_user`,
               field: `sex`,
               fieldValue: altSex}, (A, B, C) => {
-                
+                if (B.length > 0) {
+                  console.log(B)
+                }
               });
           }
         }

@@ -42,7 +42,14 @@ function handleSuggests () {
 function electsValid (elects) {
   document.addEventListener(`click`, function (e) {
     if (e.target.nodeName === `BUTTON` && e.target.innerHTML === `Validate`) {
-
+      let UAStream = new UARequestRouter();
+      UAStream.URLEncodedCourier(`POST`, `/api/ua/`, {
+        title: `electsValidQ`,
+        JSON: JSON.stringify(elects),
+        handleRequest: () => {
+          //
+        }
+      });
     }
   });
 }
