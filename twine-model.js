@@ -49,7 +49,57 @@ module.exports = {
   },
 
   welcome () {
-    return {};
+    return {
+      tag: `div`, flags: {class: `_UYq`}, tagChild: [{
+        tag: `div`, flags: {class: `_FxQ`}, tagChild: [{
+          tag: `div`, flags: {class: `_SyA _GTQ`}, tagChild: [{
+            tag: `div`, flags: {class: `_UxE`}, tagChild: [{
+              tag: `div`, flags: {class: `_UXa`}
+            }, {
+              tag: `form`, flags: {class: `_UGA`, autocomplete: `off`}, tagChild: [{
+                tag: `span`, flags: {class: `_Ctx`}, closure: `twineall`
+              }, {
+                tag: `div`, flags: {class: `_cs_xq _rr_cc`}, tagChild: [{
+                  tag: `div`, flags: {class: `_UFA`}, tagChild: [{
+                    tag: `input`, flags: {class: `_RRD`, placeholder: `email`, type: `text`}
+                  }]
+                }, {
+                  tag: `div`, flags: {class: `_UFA`}, tagChild: [{
+                    tag: `input`, flags: {class: `_RRD`, placeholder: `password`, type: `password`}
+                  }]
+                }]
+              }, {
+                tag: `div`, flags: {class: `_FFe`}, tagChild: [{
+                  tag: `button`, flags: {class: `RRc RRe GHc _bsZ`}, closure: `Sign in`
+                }]
+              }, {
+                tag: `p`, flags: {class: `_GXe`}, tagChild: [{
+                  tag: `a`, flags: {class: `_THa`, href: `javascript:;`}, closure: `Opt in With Email`
+                }]
+              }]
+            }]
+          }]
+        }]
+      }, {
+        tag: `script`, flags: {src: `/public/gp/js/twine-sdk.js`}
+      }, {
+        tag: `script`, flags: {src: `/public/gp/js/twine-inactive.js`}
+      }]
+    };
+  },
+
+  initPassModel () {
+    return [{
+      tag: `div`, tagChild: [{
+        tag: `div`, flags: {class: ``}, tagChild: [{
+          tag: `textarea`, flags: {class: `_TxA`, autocomplete: `off`, placeholder: `Paste Email`}
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gcQ`}, tagChild: [{
+          tag: `button`, flags: {class: `_bsZ`}, closure: `Validate Email`
+        }]
+      }]
+    }];
   },
 
   cookieModel (mapping) {

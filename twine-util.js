@@ -1,6 +1,7 @@
 const {readFile} = require(`fs`);
 const mysql = require(`mysql`);
 const cookie = require(`cookie`);
+const crypto = require(`crypto`);
 
 const config = require(`./twine-config`);
 const modeler = require(`./twine-model`);
@@ -83,13 +84,19 @@ class SQL extends Util2 {
     }, (A, B, C) => {callback(A, B, C)});
   }
 
+  SqlCommit (listSqlVar, callback) {
+    this.uniSql.query({
+      sql: config.SqlQuery.insert,
+      values: listSqlVar}, (A, B, C) => {callback(A, B, C)});
+  }
+
   SqlValidateElects (listSqlVar, callback) {
 
     this.availElectSub_({
       [listSqlVar[`mailTo`]]: `id`,
       [listSqlVar[`mail`]]: `idMail`,
       [listSqlVar[`mailSx`]]: `idSex`,
-      [listSqlVar[`refs`]]: `refs`}); console.log(listSqlVar)//this.availElectSub_(this.electSub_);
+      [listSqlVar[`refs`]]: `refs`});
 
     this.multiSql.query(this.literalFormat(
       `${config.SqlQuery.getElects};${config.SqlQuery.equateElectsSex};${config.SqlQuery.equateMail};${config.SqlQuery.getChain}`),
@@ -190,6 +197,10 @@ class UAStreamQuery {
   }
 
   UAStreamQs () {
+    if (this.qString.electsAuthQ) {
+      this.electsAuth(JSON.parse(this.qString.electsAuthQ));
+    }
+
     if (this.qString.electsQuery) {
       this.electsStream(JSON.parse(this.qString.electsQuery));
     }
@@ -197,6 +208,11 @@ class UAStreamQuery {
     if (this.qString.electsValidQ) {
       this.electsValidStream(JSON.parse(this.qString.electsValidQ));
     }
+  }
+
+  electsAuth (QString) {
+    this.UA.res.writeHead(200, config.electMimeTypes.json);
+    this.UA.res.end(JSON.stringify(modeler.initPassModel()));
   }
 
   electsStream (QString) {
@@ -244,7 +260,25 @@ class UAStreamQuery {
               field: `sex`,
               fieldValue: altSex}, (A, B, C) => {
                 if (B.length > 0) {
-                  console.log(B)
+                  //indexRandom = (Math.floor(Math.random() * index) + 1)
+                  let localServerTime = new Date().valueOf();
+                  let localServerTimeSum = crypto.createHash(`md5`).update(`${localServerTime}`, `utf8`).digest(`hex`);
+                  new SQL().SqlCommit([`temp_users`, {
+                    altid: listSqlVar[`mailTo`],
+                    btime: localServerTime,
+                    chain: localServerTimeSum,
+                    idsum: localServerTimeSum,
+                    jtime: `null`,
+                    mail: listSqlVar[`mail`],
+                    reco: `null`,
+                    referer: listSqlVar[`refs`],
+                    sex: listSqlVar[`mailSx`]}], (A, B, C) => {
+                      new SQL().SqlCommit([`suggests_` + listSqlVar[`refs`], {
+                        btime: localServerTime,
+                        idsum: localServerTimeSum,
+                        sex: listSqlVar[`mailSx`]}], (A, B, C) => {console.log(A)});
+                    }
+                  );
                 }
               });
           }
