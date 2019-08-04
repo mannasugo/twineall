@@ -27,5 +27,6 @@ module.exports = {
     getChain: `select chain from temp_users where idsum='{refs}'`,
     getPlus: `select * from ?? where ?? = ?`,
     insert: `insert into ?? set ?`,
+    getPlusAnonym: `select * from {table} where {field}='{fieldValue}' and {fieldPlus}='{fieldValuePlus}'`,
   }
 }
