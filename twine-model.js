@@ -88,7 +88,7 @@ module.exports = {
     };
   },
 
-  initPassModel () {
+  initMailModel () {
     return [{
       tag: `div`, tagChild: [{
         tag: `div`, flags: {class: ``}, tagChild: [{
@@ -101,6 +101,24 @@ module.exports = {
       }]
     }];
   },
+
+  initPassModel (mapping) {
+    return [{
+      tag: `span`, flags: {class: `_Ctx`}, closure: `twineall`,
+    }, {
+      tag: `div`, flags: {class: `_uHC`}, closure: `Welcome to twineall ${mapping.mailTo}, create your password to finish setup.`
+    }, {
+      tag: `div`, flags: {class: `_CsA`}, tagChild: [{
+        tag: `div`, flags: {class: `_UFA`}, tagChild: [{
+          tag: `input`, flags: {class: `_RRD`, placeholder: mapping.inputStill, maxlength: mapping.inputMax, type: mapping.inputType}
+        }]
+      }]
+    }, {
+      tag: `div`, flags: {class: `_FFe`}, tagChild: [{
+        tag: `button`, flags: {class: `_bsZ`}, closure: mapping.inputAction
+      }]
+    }];
+  }, 
 
   cookieModel (mapping) {
     return [{
