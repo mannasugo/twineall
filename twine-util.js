@@ -104,6 +104,15 @@ class SQL extends Util2 {
     );
     this.multiSql.end();
   }
+
+  SqlMultiVar (SqlMapping, callback) {
+
+    this.availElectSub_(SqlMapping);
+
+    this.uniSql.query(this.literalFormat(
+      config.SqlQuery.getPlusAnonym), (A, B, C) => {callback(A, B, C)});
+    this.uniSql.end();
+  }
 }
 
 class UACallsPublic extends Util2 {
@@ -201,6 +210,10 @@ class UAStreamQuery {
       this.electsAuth(JSON.parse(this.qString.electsAuthQ));
     }
 
+    if (this.qString.electsMailQ) {
+      this.initMailStream(JSON.parse(this.qString.electsMailQ));
+    }
+
     if (this.qString.electsQuery) {
       this.electsStream(JSON.parse(this.qString.electsQuery));
     }
@@ -212,7 +225,42 @@ class UAStreamQuery {
 
   electsAuth (QString) {
     this.UA.res.writeHead(200, config.electMimeTypes.json);
-    this.UA.res.end(JSON.stringify(modeler.initPassModel()));
+    this.UA.res.end(JSON.stringify(modeler.initMailModel()));
+  }
+
+  initMailStream (QString) {
+    const UA = this.UA;
+
+    new SQL().SqlPlus({
+      table: `usermeta`,
+      field: `mail`,
+      fieldValue: QString.mailTo}, (A, B, C) => {
+        if (B.length === 0) {
+          new SQL().SqlMultiVar({
+            [`temp_users`]: `table`,
+            [`mail`]: `field`,
+            [QString[`mailTo`]]: `fieldValue`,
+            [`reco`]: `fieldPlus`,
+            [`null`]: `fieldValuePlus`}, (A, B, C) => {
+              if (B.length === 1) {
+                let modelMapping = {
+                  mailTo: B[0].altid,
+                  inputStill: `password`,
+                  inputMax: 30,
+                  inputType: `password`,
+                  inputAction: `continue`};
+
+                UA.res.setHeader(`Set-Cookie`, cookie.serialize(`initMailStill`, QString[`mailTo`], {
+                  httpOnly: true,
+                  path: `/`,
+                  secure: true
+                }));
+                UA.res.writeHead(200, config.electMimeTypes.json);
+                UA.res.end(JSON.stringify(modeler.initPassModel(modelMapping)));
+              }
+            });
+        }
+      });
   }
 
   electsStream (QString) {
