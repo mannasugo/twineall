@@ -279,7 +279,55 @@ class UAStreamQuery {
     const UA = this.UA;
     let cookieJar = cookie.parse(UA.req.headers.cookie);
 
+    new SQL().SqlPlus({
+      table: `temp_users`,
+      field: `mail`,
+      fieldValue: cookieJar.initMailStill}, (A, B, C) => {
+        if (B.length === 1) {
+          if {B[0].reco !== `null`} {
 
+            let mailPlus = B[0].altid;
+            let bTime = B[0].btime;
+            let refSum = B[0].chain;
+            let mailSum = B[0].idsum;
+            let mailTo = B[0].mail;
+            let mailPass = crypto.createHash(`md5`).update(QString[`mailPass`], `utf8`);
+            let mailSex = B[0].sex;
+
+            new SQL().SqlCommit([`users`, {
+              altid: mailPlus, 
+              btime: bTime, 
+              idsum: mailSum, 
+              sex: mailSex}], (A, B, C) => {
+                new SQL().SqlCommit([`usermeta`, {
+                  bio: `null`, 
+                  chain: refSum, 
+                  idsum: mailSum, 
+                  mail: mailTo, 
+                  mug: `null`, 
+                  pass: mailPass.digest(`hex`)}], (A, B, C) => {
+                    new SQL().SqlsMultiVar({
+                      [mailSum]: `mailSum`}, 
+                      `${config.SqlQuery.waits};
+                      ${config.SqlQuery.twines};
+                      ${config.SqlQuery.nulls};
+                      ${config.SqlQuery.txts};
+                      ${config.SqlQuery.txtMeta};
+                      ${config.SqlQuery.refs};
+                      ${config.SqlQuery.reco}`, (A, B, C) => {
+                        UA.res.setHeader(`Set-Cookie`, cookie.serialize(`UAAuthorized`, mailSum, {
+                          httpOnly: true,
+                          path: `/`,
+                          secure: true
+                        }));
+                        UA.res.writeHead(200, config.electMimeTypes.json);
+                        UA.res.end(JSON.stringify(mailSum));
+                      });
+                  });
+              });
+          }
+        }
+      });
   }
 
   electsStream (QString) {
