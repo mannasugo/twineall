@@ -50,7 +50,7 @@ function electsPassCommit () {
       let UAStream = new UARequestRouter();
       UAStream.URLEncodedCourier(`POST`, `/api/ua/`, {
         title: `electsPassQ`,
-        JSON: JSON.stringify(new UAUtil().WSTrim(passTrim)),
+        JSON: JSON.stringify({mailTo: new UAUtil().WSTrim(passTrim)}),
         handleRequest: function () {
           if (UAStream.UAProto_.responseText.length < 1) return;
         }
