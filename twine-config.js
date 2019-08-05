@@ -28,5 +28,12 @@ module.exports = {
     getPlus: `select * from ?? where ?? = ?`,
     insert: `insert into ?? set ?`,
     getPlusAnonym: `select * from {table} where {field}='{fieldValue}' and {fieldPlus}='{fieldValuePlus}'`,
+    waits: `create table awaits_{mailSum} (idsum VARCHAR(320) not null)`,
+    twines: `create table accepts_{mailSum} (idsum VARCHAR(320) not null)`,
+    nulls: `create table nulls_{mailSum} (idsum VARCHAR(320) not null)`,
+    txts: `create table textchain_{mailSum} (idsum VARCHAR(320) not null,ptime TEXT not null,idsum2 VARCHAR(320) not null,txtstring TEXT not null,txtstring_hash TEXT not null)`,
+    txtMeta: `create table textsstat_{mailSum} (idsum VARCHAR(320) not null,posttally INT not null,ptime TEXT not null,tally INT not null)`,
+    refs: `create table suggests_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
+    reco: `create table recommends_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
   }
 }
