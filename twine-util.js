@@ -248,13 +248,11 @@ class UAStreamQuery {
       field: `mail`,
       fieldValue: QString.mailTo}, (A, B, C) => {
         if (B.length === 0) {
-          new SQL().SqlMultiVar({
-            [`temp_users`]: `table`,
-            [`mail`]: `field`,
-            [QString[`mailTo`]]: `fieldValue`,
-            [`reco`]: `fieldPlus`,
-            [`null`]: `fieldValuePlus`}, (A, B, C) => {
-              if (B.length === 1) {
+          new SQL().SqlPlus({
+            table: `temp_users`,
+            field: `mail`,
+            fieldValue: QString[`mailTo`]}, (A, B, C) => {
+              if (B.length === 1 && B[0].reco !== `null`) {
                 let modelMapping = {
                   mailTo: B[0].altid,
                   inputStill: `password`,
