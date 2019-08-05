@@ -113,6 +113,14 @@ class SQL extends Util2 {
       config.SqlQuery.getPlusAnonym), (A, B, C) => {callback(A, B, C)});
     this.uniSql.end();
   }
+
+  SqlsMultiVar (SqlMapping, SqlsString, callback) {
+    this.availElectSub_(SqlMapping);
+
+    this.multiSql.query(this.literalFormat(SqlsString), (A, B, C) => {
+      callback(A, B, C)});
+    this.multiSql.end();
+  }
 }
 
 class UACallsPublic extends Util2 {
@@ -214,6 +222,10 @@ class UAStreamQuery {
       this.initMailStream(JSON.parse(this.qString.electsMailQ));
     }
 
+    if (this.qString.electsPassQ) {
+      this.initPassStream(JSON.parse(this.qString.electsPassQ));
+    }
+
     if (this.qString.electsQuery) {
       this.electsStream(JSON.parse(this.qString.electsQuery));
     }
@@ -261,6 +273,13 @@ class UAStreamQuery {
             });
         }
       });
+  }
+
+  initPassStream (QString) {
+    const UA = this.UA;
+    let cookieJar = cookie.parse(UA.req.headers.cookie);
+
+
   }
 
   electsStream (QString) {
