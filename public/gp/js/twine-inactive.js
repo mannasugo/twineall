@@ -42,7 +42,7 @@ function electsMailCommit () {
 function electsPassCommit () {
   let QModel = document.querySelector(`input`);
 
-  if (QModel.getAttribute(`placeholder`) === `create password`) {
+  if (QModel.getAttribute(`placeholder`) === `password`) {
     document.querySelector(`button`).addEventListener(`click`, function (e) {
       e.preventDefault();
       let passTrim = new UAUtil().limitTrim(QModel.value);
