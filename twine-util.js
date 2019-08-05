@@ -282,7 +282,7 @@ class UAStreamQuery {
       field: `mail`,
       fieldValue: cookieJar.initMailStill}, (A, B, C) => {
         if (B.length === 1) {
-          if {B[0].reco !== `null`} {
+          if (B[0].reco !== `null`) {
 
             let mailPlus = B[0].altid;
             let bTime = B[0].btime;
