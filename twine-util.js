@@ -214,6 +214,10 @@ class UAStreamQuery {
   }
 
   UAStreamQs () {
+    if (this.qString.passValid) {
+      this.passValid(JSON.parse(this.qString.passValid));
+    }
+
     if (this.qString.electsAuthQ) {
       this.electsAuth(JSON.parse(this.qString.electsAuthQ));
     }
@@ -233,6 +237,29 @@ class UAStreamQuery {
     if (this.qString.electsValidQ) {
       this.electsValidStream(JSON.parse(this.qString.electsValidQ));
     }
+  }
+
+  passValid (QString) {
+
+    const UA = this.UA;
+
+    new SQL().SqlPlus({
+      table: `usermeta`,
+      field: `mail`,
+      fieldValue: QString[`mailTo`]}, (A, B, C) => {
+        if (B.length === 1) {
+          let hexPass = crypto.createHash(`md5`).update(QString[`mailPass`], `utf8`);
+          if (B[0].pass === hexPass.digest(`hex`)) {
+            UA.res.setHeader(`Set-Cookie`, cookie.serialize(`UAAuthorized`, B[0].idsum, {
+              httpOnly: true,
+              path: `/`,
+              secure: true,
+            }));
+            UA.res.writeHead(200, config.electMimeTypes.json);
+            UA.res.end(JSON.stringify(B[0].idsum));
+          }
+        }
+      });
   }
 
   electsAuth (QString) {
