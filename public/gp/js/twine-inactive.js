@@ -26,7 +26,7 @@ function passValid () {
         JSON: JSON.stringify({
           mailTo: listOfValues[0],
           mailPass: listOfValues[1]
-        });
+        })
         handleRequest: () => {
           if (UAStream.UAProto_.responseText.length < 1) return;
         }
