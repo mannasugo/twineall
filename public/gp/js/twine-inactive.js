@@ -94,4 +94,5 @@ function electsPassCommit () {
   }
 }
 
+passValid();
 electsAuthorize();
