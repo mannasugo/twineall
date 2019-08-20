@@ -24,7 +24,7 @@ module.exports = {
     getElects: `select * from suggests_{refs}`,
     equateElectsSex: `select * from suggests_{refs} where sex='{idSex}'`,
     equateMail: `select * from temp_users where mail='{idMail}'`,
-    getChain: `select chain from temp_users where idsum='{refs}'`,
+    getChain: `select * from temp_users where idsum='{refs}'`,
     getPlus: `select * from ?? where ?? = ?`,
     insert: `insert into ?? set ?`,
     getPlusAnonym: `select * from {table} where {field}='{fieldValue}' and {fieldPlus}='{fieldValuePlus}'`,
