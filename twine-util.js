@@ -75,6 +75,7 @@ class SQL extends Util2 {
       sql: config.SqlQuery.getMono,
       values: [sqlVar]
     }, (A, B, C) => {callback(A, B, C)});
+    this.uniSql.end();
   }
 
   SqlPlus (electSqlVar, callback) {
@@ -82,12 +83,14 @@ class SQL extends Util2 {
       sql: config.SqlQuery.getPlus,
       values: [electSqlVar.table, electSqlVar.field, electSqlVar.fieldValue]
     }, (A, B, C) => {callback(A, B, C)});
+    this.uniSql.end();
   }
 
   SqlCommit (listSqlVar, callback) {
     this.uniSql.query({
       sql: config.SqlQuery.insert,
       values: listSqlVar}, (A, B, C) => {callback(A, B, C)});
+    this.uniSql.end();
   }
 
   SqlValidateElects (listSqlVar, callback) {
@@ -135,6 +138,8 @@ class UACallsPublic extends Util2 {
     if (this.levelState === ``) this.handleRootCall();
 
     if (this.levelState === `elect`) this.handleElectCall();
+
+    if (this.levelState === `twine`) this.twineCall();
   }
 
   handleRootCall () {
@@ -197,12 +202,51 @@ class UACallsPublic extends Util2 {
           modelMapping[`appendModel`] = modeler.electsModel([`male`, `female`]);
           modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
           modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
-          electModel = modeler.callFrame(modelMapping); console.dir(electModel)
+          electModel = modeler.callFrame(modelMapping);
         }
         UA.res.writeHead(200, config.electMimeTypes.html);
         UA.res.end(electModel);
       });
     });
+  }
+
+  twineCall () {
+
+    const UA = this.UA;
+    const cookieJar = cookie.parse(UA.req.headers.cookie);
+
+    new SQL().SqlPlus({
+      table: `users`,
+      field: `idsum`,
+      fieldValue: cookieJar.UAAuthorized}, (A, B, C) => {
+        if (B.length === 1) {
+          let altSex;
+          if (B[0].sex === `female`) {
+            altSex = `male`;
+          }
+          if (B[0].sex === `male`) {
+            altSex = `female`;
+          }
+          new SQL().SqlPlus({
+            table: `usermeta`, 
+            field: `idsum`, 
+            fieldValue: cookieJar.UAAuthorized}, (A, B, C) => {
+
+              let refSum = B[0].chain;
+
+              new SQL().SqlPlus({
+                table: `temp_users`, 
+                field: `sex`, 
+                fieldValue: altSex}, (A, B, C) =>  {
+
+                  let i = (Math.floor(Math.random() * B.length) + 1); console.log(B)
+
+                  UA.res.writeHead(200, config.electMimeTypes.html);
+                  UA.res.end(i.toString());
+                });
+            });
+        }
+      });
   }
 }
 
@@ -395,18 +439,23 @@ class UAStreamQuery {
               altSex = `female`;
             }
             if (!altSex) return;
+            let refSum = B[3][0].chain;
             new SQL().SqlPlus({
-              table: `temp_users`,
+              table: `users`,
               field: `sex`,
-              fieldValue: altSex}, (A, B, C) => {
+              fieldValue: altSex}, (A, B, C) => {console.log(B)
                 if (B.length > 0) {
+                  let i, recoSum;
+                  i = (Math.floor(Math.random() * B.length)); console.log(typeof i)
+                  if (typeof i !== `number`) return;
+                  recoSum = B[i].idsum; console.log(recoSum)
                   //indexRandom = (Math.floor(Math.random() * index) + 1)
                   let localServerTime = new Date().valueOf();
                   let localServerTimeSum = crypto.createHash(`md5`).update(`${localServerTime}`, `utf8`).digest(`hex`);
                   new SQL().SqlCommit([`temp_users`, {
                     altid: listSqlVar[`mailTo`],
                     btime: localServerTime,
-                    chain: localServerTimeSum,
+                    chain: refSum,//@initCommit -> localServerTimeSum,
                     idsum: localServerTimeSum,
                     jtime: `null`,
                     mail: listSqlVar[`mail`],
@@ -416,7 +465,12 @@ class UAStreamQuery {
                       new SQL().SqlCommit([`suggests_` + listSqlVar[`refs`], {
                         btime: localServerTime,
                         idsum: localServerTimeSum,
-                        sex: listSqlVar[`mailSx`]}], (A, B, C) => {console.log(A)});
+                        sex: listSqlVar[`mailSx`]}], (A, B, C) => {
+                          new SQL().SqlCommit([`recommends_` + recoSum, {
+                            btime: localServerTime, 
+                            idsum: localServerTimeSum, 
+                            sex: listSqlVar[`mailSx`]}], (A, B, C) => {});
+                        });
                     }
                   );
                 }
