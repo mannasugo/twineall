@@ -35,5 +35,6 @@ module.exports = {
     txtMeta: `create table textsstat_{mailSum} (idsum VARCHAR(320) not null,posttally INT not null,ptime TEXT not null,tally INT not null)`,
     refs: `create table suggests_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
     reco: `create table recommends_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
+    joinAny: `select * from {mailSum_Tab}, {mailSum_Tab_} where {mailSum_Tab}.{field}={mailSum_Tab_}.{field}`,
   }
 }
