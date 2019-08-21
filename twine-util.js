@@ -187,26 +187,45 @@ class UACallsPublic extends Util2 {
     const UA = this.UA;
 
     this.modelStyler(config.CSSDeck + `user.css`, styleString => {
-      new SQL().SqlMono(`suggests_` + jar.UAAuthorized, (A, B, C) => {
 
-        modelMapping = {
-          title: `twineall - Nominate Member`,
-          styleText: styleString,
-          UACookie: jar.UAAuthorized,
-          appendModel: ``,
-        };
+      new SQL().SqlsMultiVar({
+        [jar.UAAuthorized]: `refs`,
+        [`recommends_` + jar.UAAuthorized]: `mailSum_Tab`, 
+        [`temp_users`]: `mailSum_Tab_`, [`idsum`]: `field`},
+        config.SqlQuery.getElects + `;` + config.SqlQuery.joinAny + `;`, (A, B, C) => {
 
-        if (B.length > 0) {
+          modelMapping = {
+            title: `twineall - Nominate Member`,
+            styleText: styleString,
+            UACookie: jar.UAAuthorized,
+            appendModel: ``,
+          };
 
-        } else {
-          modelMapping[`appendModel`] = modeler.electsModel([`male`, `female`]);
+          if (B[0].length > 1) {
+
+            let altSex;
+
+            if (B[0][0].sex === `female`) {
+              altSex = `male`;
+            }
+
+            if (B[0][0].sex === `male`) {
+              altSex = `female`;
+            }
+
+            modelMapping[`appendModel`] = [modeler.electsModel([altSex,]), modeler.recoModel(B[1])];
+
+          } else {
+            modelMapping[`appendModel`] = [modeler.electsModel([`male`, `female`]), modeler.recoModel(B[1])];
+          }
+
           modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
           modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
           electModel = modeler.callFrame(modelMapping);
-        }
-        UA.res.writeHead(200, config.electMimeTypes.html);
-        UA.res.end(electModel);
-      });
+          
+          UA.res.writeHead(200, config.electMimeTypes.html);
+          UA.res.end(electModel);
+        });
     });
   }
 
