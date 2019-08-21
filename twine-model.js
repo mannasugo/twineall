@@ -189,7 +189,44 @@ module.exports = {
         }]
       };
     }
-    return electsAppendModel;
+    return {tag: `div`, tagChild: electsAppendModel};
+  },
+
+  recoModel (recoMapping) {
+
+    let listModel = [];
+
+    recoMapping.forEach((reco, index) => {
+      listModel[index] = {
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `div`, flags: {class: `_gcQ _gMB`}, tagChild: [{
+            tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+              tag: `div`, flags: {class: `_QxM`}, tagChild: [{
+                tag: `div`, flags: {class: `_TZx _TXs`}, closure: reco.altid
+              }]
+            }, {
+              tag: `span`, flags: {class: `_uHt`}, closure: `suggested by...`
+            }, {
+              tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{
+                tag: `div`, flags: {class: `_gM_a _agM`}, tagChild: [{
+                  tag: `a`, flags: {class: `_TX_a _atX`, href: `#`}, closure: `Approve`
+                }]
+              }]
+            }]
+          }]
+        }]
+      };
+    });
+
+    return {
+      tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `span`, flags: {class: `_txM`}, closure: `Recommendation Requests`
+        }, {
+          tag: `div`, tagChild: listModel
+        }]
+      }]
+    }
   },
 
   immerseModel (mapping) {
