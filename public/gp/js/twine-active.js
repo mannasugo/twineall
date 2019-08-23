@@ -54,4 +54,22 @@ function electsValid (elects) {
   });
 }
 
+function recoApproval () {
+
+  document.addEventListener(`click`, (e) => {
+    if (e.target.hasAttribute(`for`) &&  e.target.innerHTML === `Approve`) {console.log(`w`)
+      let UAStream = new UARequestRouter();
+      UAStream.URLEncodedCourier(`POST`, `/api/ua/`, {
+        title: `recoApproval`,
+        JSON: JSON.stringify({
+          recoSum: sessionStorage.UAlet, mailSum: e.target.getAttribute(`for`)}),
+        handleRequest: () => {
+          //
+        }
+      });
+    }     
+  });
+}
+
 handleSuggests();
+recoApproval();

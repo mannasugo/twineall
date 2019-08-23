@@ -36,5 +36,8 @@ module.exports = {
     refs: `create table suggests_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
     reco: `create table recommends_{mailSum} (btime TEXT not null,idsum VARCHAR(320) not null, sex TEXT not null)`,
     joinAny: `select * from {mailSum_Tab}, {mailSum_Tab_} where {mailSum_Tab}.{field}={mailSum_Tab_}.{field}`,
+    fieldValueAlterMono: `update {mailSum_Tab} set {field} = '{fieldValue}' where {field_2} = '{fieldValue_2}'`,
+    deleteCol: `delete from {mailSum_Tab} where {field} = '{fieldValue}'`,
+    //tabDel,
   }
 }

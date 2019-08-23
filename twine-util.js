@@ -201,7 +201,7 @@ class UACallsPublic extends Util2 {
             appendModel: ``,
           };
 
-          if (B[0].length > 1) {
+          if (B[0].length < 2) {
 
             let altSex;
 
@@ -299,6 +299,10 @@ class UAStreamQuery {
 
     if (this.qString.electsValidQ) {
       this.electsValidStream(JSON.parse(this.qString.electsValidQ));
+    }
+
+    if (this.qString.recoApproval) {
+      this.recoApprovalStream(JSON.parse(this.qString.recoApproval));
     }
   }
 
@@ -498,6 +502,29 @@ class UAStreamQuery {
         }
       }
     });
+  }
+
+  recoApprovalStream (QString) {
+
+    new SQL().SqlPlus({
+      table: `recommends_` + QString[`recoSum`],
+      field: `idsum`,
+      fieldValue: QString[`mailSum`]}, (A, B, C) => {
+
+        if (B.length === 1) {
+          new SQL().SqlsMultiVar({
+            [`temp_users`]: `mailSum_Tab`,
+            [`reco`]: `field`, [QString[`recoSum`]]: `fieldValue`,
+            [`idsum`]: `field_2`, [QString[`mailSum`]]: `fieldValue_2`},
+            config.SqlQuery.fieldValueAlterMono, (A, B, C) => {
+
+              new SQL().SqlsMultiVar({
+                [`recommends_` + QString[`recoSum`]]: `mailSum_Tab`,
+                [`idsum`]: `field`, [QString[`mailSum`]]: `fieldValue`},
+                config.SqlQuery.deleteCol, (A, B, C) => {});
+            });
+        }
+      });
   }
 }
 
