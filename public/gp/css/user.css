@@ -379,6 +379,92 @@ button {
   flex-shrink: 1;
 }
 
+._DyQ, ._yHu {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+._DyQ {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  position: relative;
+}
+
+._cCq {
+  background-color: #fafafa;
+  border-radius: 50%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  /*box-shadow: 0 1px 3px rgba(26,26,26,.1);*/
+}
+
+._cCq::after {
+  border: 1px solid rgba(0,0,0,.0975);
+  border-radius: 50%;
+  bottom: 0;
+  content: "";
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0; 
+}
+
+._mgQ {
+  height: 100%;
+  width: 100%;
+}
+
+._MGa {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+._gQe {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+._sZ_a {
+  color: #646464;
+  font-size: 22px;
+  font-weight: 300;
+}
+
+._txM_2 {
+  color: #999;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .2px;
+}
+
 @media (min-width: 640px) {
   ._gHm {
     background-color: #fff;

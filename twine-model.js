@@ -271,5 +271,60 @@ module.exports = {
         }]
       }]
     };
+  }, 
+
+  mugModel (mugMapping) {
+    return {
+      tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `div`, flags: {class: `_DyQ gQe gMX`}, tagChild: [{
+            tag: `a`, flags: {id: `Avatar`, href: `#`, class: `_cCq`, style: `height: 50px; width: 50px;`}, tagChild: [{
+              tag: `img`, flags: {class: `_mgQ`, src: ``, alt: ``}
+            }]
+          }, {
+            tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+              tag: `div`, flags: {class: `_QxM`}, tagChild: [{
+                tag: `span`, flags: {class: `_TZx _TXs`},
+                closure: `Norman Asugo`
+              }]
+            }, {tag: `a`,  closure: `mannasugo`}]
+          }, {
+            tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{}]
+          }]
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gC_a` }, tagChild: [{
+          tag: `div`, flags: {class: `_QZg`}, tagChild:[{
+            tag: `div`, flags: {style: `flex: 3`}
+          }, {
+            tag: `div`, flags: {class: `_gQe _MGa`}, tagChild: [{
+              tag: `div`, flags: {class: `_sZ_a`}, closure: 300
+            }, {tag: `div`, flags: {class: `_txM_2`}, closure: `posts`}]
+          }]          
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gMB _gxM _gC_a`}, tagChild: [/*{
+              tag: `div`, flags: {class: `_DyQ`}, tagChild: [{
+                tag: `div`, flags: {class: `_dgQ`}, tagChild: [{
+                  tag: `span`, flags: {class: `_VPH`, style: `width: 26px; height: 26px;`}, tagChild: [{
+                    tag: `img`}]
+                }]
+              }, {
+                tag: `div`, flags: {class: `_dgQ`}, tagChild: [{
+                  tag: `span`, flags: {class: `_VPH`, style: `width: 26px; height: 26px;`}, tagChild: [{
+                    tag: `img`}]
+                }]
+              }]
+            },*/ {
+          tag: `div`, flags: {class: `_QZg`}, tagChild: [{
+            tag: `span`, flags: {class: `_MTx`}, closure: `50000 Requests`}]
+        }]
+      }, {
+        tag: `div`, flags: {class: `_gMB _gxM _gC_a`}, tagChild: [{
+          tag: `div`, flags: {class: `_QZg`}, tagChild: [{
+            tag: `span`, flags: {class: `_MTx`}, closure: `564 likes`}]
+        }]
+      }]
+    };
   }
 };

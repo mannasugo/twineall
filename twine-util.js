@@ -140,6 +140,8 @@ class UACallsPublic extends Util2 {
     if (this.levelState === `elect`) this.handleElectCall();
 
     if (this.levelState === `twine`) this.twineCall();
+
+    if (this.levelState === `mug`) this.mugCall();
   }
 
   handleRootCall () {
@@ -201,9 +203,9 @@ class UACallsPublic extends Util2 {
             appendModel: ``,
           };
 
-          if (B[0].length < 2) {
+          if (B[0].length > 0 && B[0].length < 2) {
 
-            let altSex;
+            let altSex; console.log(B)
 
             if (B[0][0].sex === `female`) {
               altSex = `male`;
@@ -258,7 +260,7 @@ class UACallsPublic extends Util2 {
                 field: `sex`, 
                 fieldValue: altSex}, (A, B, C) =>  {
 
-                  let i = (Math.floor(Math.random() * B.length) + 1); console.log(B)
+                  let i = (Math.floor(Math.random() * B.length)); console.log(B)
 
                   UA.res.writeHead(200, config.electMimeTypes.html);
                   UA.res.end(i.toString());
@@ -266,6 +268,36 @@ class UACallsPublic extends Util2 {
             });
         }
       });
+  }
+
+  mugCall () {
+
+    const UA = this.UA;
+    const cookieJar = cookie.parse(UA.req.headers.cookie);
+
+    if (!cookieJar.UAAuthorized) return;
+
+    this.modelStyler(config.CSSDeck + `user.css`, styleString => {
+
+      new SQL().SqlsMultiVar({
+        [`usermeta`]: `mailSum_Tab`, 
+        [`users`]: `mailSum_Tab_`, [`idsum`]: `field`},
+        config.SqlQuery.joinAny, (A, B, C) => {
+
+          let modelMapping = {
+            title: B[0].altid,
+            styleText: styleString,
+            UACookie: cookieJar.UAAuthorized,
+          };
+
+          modelMapping[`appendModel`] = [modeler.mugModel()];
+          modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
+          modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
+
+          UA.res.writeHead(200, config.electMimeTypes.html);
+          UA.res.end(modeler.callFrame(modelMapping))
+      });
+    });
   }
 }
 
