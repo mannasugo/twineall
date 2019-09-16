@@ -1,3 +1,4 @@
+const fs = require(`fs`);
 const {readFile} = require(`fs`);
 const mysql = require(`mysql`);
 const cookie = require(`cookie`);
@@ -234,40 +235,63 @@ class UACallsPublic extends Util2 {
   twineCall () {
 
     const UA = this.UA;
-    const cookieJar = cookie.parse(UA.req.headers.cookie);
+    const cJar = cookie.parse(UA.req.headers.cookie);
 
-    new SQL().SqlPlus({
-      table: `users`,
-      field: `idsum`,
-      fieldValue: cookieJar.UAAuthorized}, (A, B, C) => {
-        if (B.length === 1) {
-          let altSex;
-          if (B[0].sex === `female`) {
-            altSex = `male`;
+    this.modelStyler(config.CSSDeck + `user.css`, styleString => {
+
+      new SQL().SqlPlus({
+        table: `users`,
+        field: `idsum`,
+        fieldValue: cJar.UAAuthorized}, (A, B, C) => {
+
+          if (B.length === 1) {
+
+            let altSex;
+
+            if (B[0].sex === `female`) {
+              altSex = `male`;
+            }
+
+            if (B[0].sex === `male`) {
+              altSex = `female`;
+            }
+
+            new SQL().SqlsMultiVar({
+              [`temp_users`]: `tab`,
+              [`awaits_` + cJar.UAAuthorized]: `tab_2`, 
+              [`idsum`]: `field`, [`sex`]: `meta`, [altSex]: `metaValue`},
+              config.SqlQuery.mismatchMultiMeta, (A, B, C) => {
+
+                //let refSum = B[0].chain;
+
+                let i = (Math.floor(Math.random() * B.length));
+
+                let twineStack = B[i];
+
+                new SQL().SqlPlus({
+                  table: `usermeta`,
+                  field: `mail`,
+                  fieldValue: twineStack.mail}, (A, B, C) => {
+
+                    twineStack[`portfolio`] = B[0].bio;
+                    twineStack[`mailSum`] = B[0].idsum;
+
+                    let modelMapping = {
+                      title: `twineall`,
+                      styleText: styleString,
+                      twineMapping: twineStack,
+                      UACookie: cJar.UAAuthorized,
+                    };
+
+                    modelMapping[`appendModel`] = [modeler.twineModel(modelMapping)];
+
+                    UA.res.writeHead(200, config.electMimeTypes.html);
+                    UA.res.end(modeler.callFrame(modelMapping));
+                  });
+              });
           }
-          if (B[0].sex === `male`) {
-            altSex = `female`;
-          }
-          new SQL().SqlPlus({
-            table: `usermeta`, 
-            field: `idsum`, 
-            fieldValue: cookieJar.UAAuthorized}, (A, B, C) => {
-
-              let refSum = B[0].chain;
-
-              new SQL().SqlPlus({
-                table: `temp_users`, 
-                field: `sex`, 
-                fieldValue: altSex}, (A, B, C) =>  {
-
-                  let i = (Math.floor(Math.random() * B.length)); console.log(B)
-
-                  UA.res.writeHead(200, config.electMimeTypes.html);
-                  UA.res.end(i.toString());
-                });
-            });
-        }
       });
+    });
   }
 
   mugCall () {
@@ -280,18 +304,19 @@ class UACallsPublic extends Util2 {
     this.modelStyler(config.CSSDeck + `user.css`, styleString => {
 
       new SQL().SqlsMultiVar({
-        [`usermeta`]: `mailSum_Tab`, 
-        [`users`]: `mailSum_Tab_`, [`idsum`]: `field`},
-        config.SqlQuery.joinAny, (A, B, C) => {
+        [`usermeta`]: `tab`, 
+        [`users`]: `tab_2`, 
+        [`idsum`]: `field`, [cookieJar.UAAuthorized]: `fieldValue`},
+        config.SqlQuery.fieldMatch, (A, B, C) => {
 
-          let modelMapping = {
+          let modelMapping = { 
             title: B[0].altid,
             styleText: styleString,
             UACookie: cookieJar.UAAuthorized,
           };
 
           modelMapping[`appendModel`] = [modeler.mugModel()];
-          modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
+          modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping), modeler.inputFileModel()];
           modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
 
           UA.res.writeHead(200, config.electMimeTypes.html);
@@ -336,6 +361,14 @@ class UAStreamQuery {
     if (this.qString.recoApproval) {
       this.recoApprovalStream(JSON.parse(this.qString.recoApproval));
     }
+
+    if (this.qString.mugOptions) {
+      this.mugOptionsStream(JSON.parse(this.qString.mugOptions));
+    }
+
+    if (this.qString.twineVerify) {
+      this.twineVerify(JSON.parse(this.qString.twineVerify));
+    }    
   }
 
   passValid (QString) {
@@ -558,6 +591,144 @@ class UAStreamQuery {
         }
       });
   }
+
+  mugOptionsStream (QString) {
+
+    const UA = this.UA;
+    const cookieJar = cookie.parse(UA.req.headers.cookie);
+
+    if (!cookieJar.UAAuthorized) return;
+
+    let modelMapping = {
+      appendModel: modeler.editModel()
+    };
+
+    UA.res.writeHead(200, config.electMimeTypes.json);
+    UA.res.end(JSON.stringify(modeler.immerseModel(modelMapping)));
+  }
+
+  twineShuffle (mailSum) {
+
+    new SQL().SqlPlus({
+      table: `users`,
+      field: `idsum`,
+      fieldValue: mailSum}, (A, B, C) => {
+
+        if (B.length === 1) {
+
+          let altSex;
+
+          if (B[0].sex === `female`) {
+            altSex = `male`;
+          }
+
+          if (B[0].sex === `male`) {
+            altSex = `female`;
+          }
+
+          new SQL().SqlsMultiVar({
+            [`temp_users`]: `tab`,
+            [`awaits_` + mailSum]: `tab_2`, 
+            [`idsum`]: `field`, [`sex`]: `meta`, [altSex]: `metaValue`},
+            config.SqlQuery.mismatchMultiMeta, (A, B, C) => {
+
+                //let refSum = B[0].chain;
+
+            let i = (Math.floor(Math.random() * B.length));
+
+            let twineStack = B[i];
+
+            new SQL().SqlPlus({
+              table: `usermeta`,
+              field: `mail`,
+              fieldValue: twineStack.mail}, (A, B, C) => {
+
+                twineStack[`portfolio`] = B[0].bio;
+                twineStack[`mailSum`] = B[0].idsum;
+
+                let modelMapping = {
+                  twineMapping: twineStack,
+                  UACookie: mailSum};
+
+                this.UA.res.writeHead(200, config.electMimeTypes.json);
+                this.UA.res.end(JSON.stringify(modeler.twineModel(modelMapping)));
+                  });
+              });
+          }
+      });
+  }
+
+  twineVerify (QString) {
+
+    let cJar = cookie.parse(this.UA.req.headers.cookie);
+
+    if (!cJar.UAAuthorized) return;
+
+    new SQL().SqlCommit([`awaits_` + QString[`mailSum`], {
+      idsum: QString[`twineSum`]}], (A, B, C) => {
+
+        new SQL().SqlPlus({
+          table: `awaits_` + QString[`twineSum`], 
+          field: `idsum`, fieldValue: QString[`mailSum`]}, (A, B, C) => {
+
+            if (B.length > 0) {
+
+              new SQL().SqlCommit([`accepts_` + QString[`mailSum`], {
+                idsum: QString[`twineSum`]}], (A, B, C) => {
+
+                new SQL().SqlCommit([`accepts_` + QString[`twineSum`], {
+                  idsum: QString[`mailSum`]}], (A, B, C) => this.twineShuffle(QString[`mailSum`]))
+                });
+            } else {
+
+              this.twineShuffle(QString[`mailSum`])
+            }
+          });
+      });
+  }
+}
+
+class blobViaHttps {
+
+  constructor (blob, meta, req, res) {
+    this.blob = blob;
+    this.meta = JSON.parse(meta);
+    this.app = {fro: req, to: res};
+  }
+
+  blobCalls () {
+
+    if (this.meta.call === `PortfolioCrop`) this.portfolioCrop();
+  }
+
+
+  portfolioCrop () {
+
+    let cJar = cookie.parse(this.app.fro.headers.cookie);
+
+    if (!cJar.UAAuthorized) return;
+
+    const u = config.portfolio + cJar.UAAuthorized + `/`;
+
+    fs.mkdir(u, {recursive: true}, (err) => {
+
+      const localServerTime = new Date().valueOf();
+
+      fs.writeFile(u + localServerTime + `.jpg`, this.blob, err => {
+
+        new SQL().SqlsMultiVar({
+          [`usermeta`]: `mailSum_Tab`,
+          [`bio`]: `field`, [localServerTime + `.jpg`]: `fieldValue`,
+          [`idsum`]: `field_2`, [cJar.UAAuthorized]: `fieldValue_2`},
+            config.SqlQuery.fieldValueAlterMono, (A, B, C) => {
+
+              this.app.to.writeHead(200, config.electMimeTypes.json);
+              this.app.to.end(`200`);
+            });
+
+      });
+    });
+  }
 }
 
 module.exports = {
@@ -566,6 +737,9 @@ module.exports = {
   },
   UAStream (QString, req, res) {
     new UAStreamQuery(QString, req, res).UAStreamQs();
+  },
+  blobViaHttps (blobStack, meta, req, res) {
+    new blobViaHttps(blobStack, meta, req, res).blobCalls();
   },
   Mysql () {
     new SQL().SqlSource();

@@ -1,8 +1,10 @@
 let atrium = `public/gp`;
+let imgAtrium = `public/img-ssl-twineall/u/`; //img-ssl.twineall.com/
 let mimeTitle = `Content-Type`;
 
 module.exports = {
   CSSDeck: `${atrium}/css/`,
+  portfolio: `${imgAtrium}360x640/`,
   electCSSTrims: {'{ ': /\s*{/g, '{': /{\s*/g, ';': /;\s*/g, ' }': /\s*}/g, '}': /}\s*/g},
   nullZoomCSS: `width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no`,
   electMimeTypes: {
@@ -38,6 +40,8 @@ module.exports = {
     joinAny: `select * from {mailSum_Tab}, {mailSum_Tab_} where {mailSum_Tab}.{field}={mailSum_Tab_}.{field}`,
     fieldValueAlterMono: `update {mailSum_Tab} set {field} = '{fieldValue}' where {field_2} = '{fieldValue_2}'`,
     deleteCol: `delete from {mailSum_Tab} where {field} = '{fieldValue}'`,
+    fieldMatch: `select * from {tab} join {tab_2} on {tab}.{field}={tab_2}.{field} where {tab}.{field} = '{fieldValue}'`,
+    mismatchMultiMeta: `select * from {tab} left join {tab_2} on {tab}.{field}={tab_2}.{field} where {tab_2}.{field} is null and {tab}.{meta}='{metaValue}'`,
     //tabDel,
   }
 }

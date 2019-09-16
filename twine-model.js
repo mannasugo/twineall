@@ -1,3 +1,5 @@
+let config = require(`./twine-config`);
+
 class ModelString {
   
   constructor() {
@@ -287,9 +289,13 @@ module.exports = {
                 tag: `span`, flags: {class: `_TZx _TXs`},
                 closure: `Norman Asugo`
               }]
-            }, {tag: `a`,  closure: `mannasugo`}]
+            }, {tag: `a`,  closure: `23 Yrs`}]
           }, {
-            tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{}]
+            tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{
+              tag: `div`, flags: {class: `_gM_a _agM`}, tagChild: [{
+                tag: `a`, flags: {for: `reco.idsum`, class: `_TX_a _atX`, href: `#`}, closure: `Edit Profile`
+              }]
+            }]
           }]
         }]
       }, {
@@ -326,5 +332,112 @@ module.exports = {
         }]
       }]
     };
+  },
+
+  twineModel (mapping) {
+
+  let twineStack = mapping.twineMapping;
+
+  let twineValues = {
+    mailSum: mapping.UACookie, twineSum: twineStack.mailSum};
+
+    return { 
+      tag: `span`, flags: {id: `twine-root`}, tagChild: [{
+        tag: `section`, flags: {class: `_xyQ _uHQ`}, tagChild: [{
+          tag: `div`, flags: {class: `_gVs`}, tagChild: [{
+            tag: `div`, flags: {class: `_YXq`}, tagChild: [{
+              tag: `section`, flags: {style: `max-width: 360px`, class: `_Cvs _Yns`}, tagChild: [{
+                tag: `header`, flags: {class: `_gCx`}, tagChild: [{
+                  tag: `div`, flags: {class: `_gtX`}, tagChild: [{
+                    tag: `div`, flags: {class: `_QXu`}, tagChild: [{
+                      tag: `div`, flags: {class:`_geW`}, tagChild: [{
+                        tag: `div`, flags: {class:`_QXu _tXu`}, tagChild: [{
+                          tag: `a`, flags: {class: `_tXu`}, closure: mapping.twineMapping.altid
+                        }, {
+                          tag: `span`, closure: `, 23`
+                        }]
+                      }]
+                    }]
+                  }]
+                }]
+              }, {
+                tag: `div`, flags: {style: `height: 100%`, class: `_ewX`}, tagChild: [{
+                  tag: `button`, flags: {class: `_-gW`}, tagChild: [{
+                    tag: `div`, flags: {class: `dissentlighticonUA`}, tagChild: [{
+                      tag: `span`, flags: {class: `_tXh`}, closure: `Close`
+                    }]
+                  }]
+                }, {
+                  tag: `div`, flags: {class: `_nQe`}, tagChild: [{
+                    tag: `div`, flags: {class: `_qXY`}, tagChild: [{
+                      tag: `div`, flags: {style: `max-width: 360px; height: 100%`, class: `_-gM`}, tagChild: [{
+                        tag: `img`, flags: {class: `_-XY`, src: config.portfolio + twineStack.mailSum + `/` + twineStack.portfolio }
+                      }, {
+                        tag: `div`, flags: {class: ``}/*, tagChild: [{
+                          tag: `div`, flags: {class: ``}
+                        }, {
+                          tag: `div`, flags: {class: ``}
+                        }]*/
+                      }]
+                    }, {
+                      tag: `div`, flags: {class: `_-uY`}
+                    }]
+                  }]
+                }, {
+                  tag: `div`, flags: {class: ``}
+                }, {
+                  tag: `button`, flags: {class: `_-ge`}, tagChild: [{
+                    tag: `div`, flags: {class: `verifylighticonUA`}, tagChild: [{
+                      tag: `span`, flags: {class: `_tXh`}, closure: `verify`
+                    }]
+                  }]
+                }, {
+                  tag: `button`, flags: {class: `_-gS`}, tagChild: [{
+                    tag: `div`, flags: {class: `closelighticonUA`}, tagChild: [{
+                      tag: `span`, flags: {class: `_tXh`}, closure: `Close`
+                    }]
+                  }]
+                }, {
+                  tag: `div`, flags: {class: ``}
+                }]
+              }]
+            }]
+          }]
+        }]
+      }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('twineStack', '${JSON.stringify(twineValues)}')`}, {
+        tag: `script`, flags: {src: `/public/gp/js/twine-active.js`}}, {
+          tag: `script`, flags: {src: `/public/gp/js/twine-sdk.js`}
+      }]
+    };
+  },
+
+  editModel () {
+
+    let optionsStack = {
+      [`file`/*`Portfolio`*/]: [`image/*`, `Take Portfolio picture`],
+      [`prefs`]: [null, `Preferences`],
+      [`btime`]: [null, `Date of Birth`],
+      [`commercial`]: [null, `Premium`],
+      [`del`]: [null, `Cancel`]
+    }, listOptionsModel = [], index = 0;
+
+    for (let Option in optionsStack) {
+      listOptionsModel[index] = {
+        tag: `div`, flags: {class: `_dVP`}, tagChild: [{
+          tag: `label`, flags: {class: `_cVP _btX`, for: Option, [`get`]: optionsStack[Option][0]}, closure: optionsStack[Option][1]
+        }]
+      }
+      ++index;
+    };
+
+    return listOptionsModel;
+  },
+
+  inputFileModel () {
+    return {
+      tag: `form`, flags: {enctype: `multipart/form-data`}, tagChild: [{
+        tag: `input`, flags: {id: `file`, type: `file`}
+      }]
+    }
   }
 };

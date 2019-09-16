@@ -84,3 +84,28 @@ const UAUtil = (function () {
   
   return UAUtil;
 })();
+
+const BlobViaHttp = (function () {
+
+  function BlobViaHttp () {
+
+    this.initProtocol = (navigator.msie && intval(navigator.version) < 10) ? window.XDomainRequest : window.XMLHttpRequest;
+    this.Protocol = new this.initProtocol();
+  }
+
+  BlobViaHttp.prototype = {
+
+    simpleBlob: function (blob, title, mailStack) {
+
+      let Protocol = this.Protocol
+
+      Protocol.open(`POST`, `/api/ua/`, true);
+      Protocol.setRequestHeader(title, JSON.stringify(mailStack));
+      Protocol.send(blob);
+    }, 
+
+    complexBlob: function () {}
+  }
+
+  return BlobViaHttp;
+})();
