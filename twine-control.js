@@ -20,10 +20,25 @@ class RouteControl {
     }
 
     if (req.method === `POST` && req.url === `/api/ua/`) {
+
+      let blob = new Buffer.alloc(+req.headers[`content-length`]);
       let endData = ``;
+      let bufferOffset = 0;
+
       req.on(`data`, (data) => {
+
+        data.copy(blob, bufferOffset);
+        bufferOffset += data.length;
         endData += data;
-      }).on(`end`, () => {Util.UAStream(parse(endData), req, res)});
+
+      }).on(`end`, () => {
+
+        if (req.headers[`x-simplehttpblob`]) {
+          Util.blobViaHttps(blob, req.headers[`x-simplehttpblob`], req, res);
+        } else {
+          Util.UAStream(parse(endData), req, res);
+        }
+      });
     }
 
     if (level === 2 && lastChar !== `/` || level === 3 && lastChar === `/`) {
