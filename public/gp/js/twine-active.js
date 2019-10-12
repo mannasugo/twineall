@@ -190,7 +190,7 @@ function imageRawTrim (files) {
       canvas.drawImage(image, left_x, left_y, dim_x, dim_y, 0, 0, dim_x, dim_y);
 
       let imageData = plane.toDataURL(`image/jpeg`);
-      let b64 = imageData.replace('data:image/jpeg;base64,','');
+      let b64 = imageData.replace('data:image/jpeg;base64,',``);
       let binary = atob(b64);
       let array = [];
 
@@ -209,6 +209,8 @@ function imageRawTrim (files) {
 }
 
 function twineVerify () {
+
+  if (!document.querySelector(`.verifylighticonUA > span`)) return;
 
   document.querySelector(`.verifylighticonUA > span`).addEventListener(`click`, e => {
     
@@ -232,8 +234,74 @@ function twineVerify () {
   });
 }
 
+function initPoolsMessage () {
+
+  document.addEventListener(`click`, (e) => {
+
+    if (e.target.hasAttribute(`for`) &&  e.target.innerHTML === `Message`) {
+
+      let HTTPS = new UARequestRouter();
+
+      HTTPS.URLEncodedCourier(`POST`, `/api/ua/`, {
+        title: `iniMessage`,
+        JSON: JSON.stringify({
+          mailSum: sessionStorage.UAlet, twineSum: e.target.getAttribute(`for`)}),
+        handleRequest: () => {
+
+          if (HTTPS.UAProto_.responseText.length < 1) return;
+
+          history.pushState({}, `Matches`, `/pools/message`);
+
+          document.body.innerHTML = ``;
+          document.body.innerHTML = new UAModel().stackStringify(JSON.parse(HTTPS.UAProto_.responseText));
+          textMail();
+        }
+      });
+    }     
+  });
+}
+
+function textMail () {
+
+  let textMailer = document.querySelector(`button`);
+
+  if (!textMailer.hasAttribute(`twineSum`)) return;
+
+  let twineSum = textMailer.getAttribute(`twineSum`);
+
+  let root = textMailer.parentNode.parentNode;
+
+  let toMail = root.querySelector(`textarea`);
+
+  textMailer.addEventListener(`click`, e => {
+
+    if (!new UAUtil().longMailTrim(toMail.value)) return;
+
+    let toMail_ = new UAUtil().longMailTrim(toMail.value);
+
+    let HTTPS = new UARequestRouter();
+
+      HTTPS.URLEncodedCourier(`POST`, `/api/ua/`, {
+        title: `textMail`,
+        JSON: JSON.stringify({
+          mailSum: sessionStorage.UAlet,
+          [`twineSum`]: twineSum, mail: toMail_}),
+        handleRequest: () => {
+
+          if (HTTPS.UAProto_.responseText.length < 1) return;
+
+          history.pushState({}, `Matches`, `/pools/message`);
+
+          document.body.innerHTML = ``;
+          document.body.innerHTML = new UAModel().stackStringify(JSON.parse(HTTPS.UAProto_.responseText));
+        }
+      });
+  });
+}
+
 handleSuggests();
 recoApproval();
 mugOptions();
-twineVerify()
+twineVerify();
+initPoolsMessage();
 //i();

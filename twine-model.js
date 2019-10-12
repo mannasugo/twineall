@@ -28,7 +28,51 @@ class ModelString {
   }
 }
 
+class Util {
+
+  lapseString (time) {
+
+    let then = new Date(parseInt(time)), lapse = (new Date - then)/1000, lapseString;
+
+    if (lapse < 86400*5) {
+
+      if (lapse >= 0) lapseString = Math.floor(lapse) + ` second`;
+
+      if (lapse >= 60) lapseString = Math.floor(lapse/60) + ` minute`;
+
+      if (lapse >= 3600) lapseString = Math.floor(lapse/3600) + ` hour`;
+
+      if (lapse >= 86400) lapseString = Math.floor(lapse/86400) + ` day`;
+
+      if (parseInt(lapseString) >= 2) lapseString = `${lapseString}s`;
+
+      lapseString += ` ago`;
+    } else {
+
+      let listMonths = [
+        `January`,
+        `February`,
+        `March`,
+        `April`,
+        `May`,
+        `June`,
+        `July`,
+        `August`,
+        `September`,
+        `October`,
+        `November`,
+        `December`];
+
+      lapseString = then.getDate() + ` ` + listMonths[then.getMonth()] + ` ` + then.getFullYear();
+    }
+    
+    return lapseString;
+  }
+}
+
 module.exports = {
+
+  lapseString: (time) => new Util().lapseString(time),
 
   modelString (model) {
     return new ModelString().modelStringify(model);
@@ -61,7 +105,7 @@ module.exports = {
               tag: `form`, flags: {class: `_UGA`, autocomplete: `off`}, tagChild: [{
                 tag: `span`, flags: {class: `_Ctx`}, closure: `twineall`
               }, {
-                tag: `div`, flags: {class: `_cs_xq _rr_cc`}, tagChild: [{
+                tag: `div`, flags: {class: `_gBC _gBA`}, tagChild: [{
                   tag: `div`, flags: {class: `_UFA`}, tagChild: [{
                     tag: `input`, flags: {class: `_RRD`, placeholder: `email`, type: `text`}
                   }]
@@ -135,7 +179,7 @@ module.exports = {
     let listOptionsModel = [], listOptions = [`root`, `elect`, `twine`, `pools`, `mug`];
     listOptions.forEach((Option, index) => {
       listOptionsModel[index] = {tag: `div`, flags: {class: `_nFa`}, tagChild: [{
-        tag: `a`, flags: {class: `_tTB ${Option}iconUA`, href: Option}, closure: Option }]};
+        tag: `a`, flags: {class: `_tTB ${Option}iconUA`, href: `/` + Option}, closure: Option }]};
     }); 
     return {
       tag: `div`, flags: {class: `_gDa`}, tagChild: [{
@@ -437,6 +481,125 @@ module.exports = {
     return {
       tag: `form`, flags: {enctype: `multipart/form-data`}, tagChild: [{
         tag: `input`, flags: {id: `file`, type: `file`}
+      }]
+    }
+  },
+
+  poolsModel (mapping) {
+
+    let poolsStack = mapping.poolsStack, listModel = [];
+
+    poolsStack.forEach((pool, index) => {
+
+      listModel[index] = {
+        tag: `div`, flags: {class: `_gMB _gcQ`}, tagChild: [{
+          tag: `span`, flags: {class: `_VPH`, style: `width: 30px; height: 30px`}, tagChild: [{
+            tag: `img`, flags: {src: ``, alt: ``}
+          }]
+        }, {
+          tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+            tag: `div`, flags: {class: `_QxM`}, tagChild: [{
+              tag: `span`, flags: {class: `_TXs _TZx`}, closure: pool.altid + `, 22`}]
+          }/*, {
+            tag: `div`, closure: `22`}*/]
+        }, {
+          tag: `div`, flags: {class: `_QZg`}, tagChild: [{
+            tag: `div`, flags: {class: `_gM_a _agM`}, tagChild: [{
+              tag: `a`, flags: {for: pool.idsum, class: `_TX_a _atX`, href: `#`}, closure: `Message`}]
+            }]
+        }]
+      };
+    });
+
+    return {
+      tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+          tag: `span`, flags: {class: `_txM`}, closure: `Matches`}]
+      }, {
+        tag: `div`, flags: {class: `_gC_a`}, tagChild: listModel
+      }]
+    };
+  },
+
+  poolTextModel (mapping) {
+
+    let node,  listModel = [];
+
+    mapping.twineStack.forEach((txt, index) => {
+
+      if (mapping.mailSum === txt.idsum) {
+
+        node = {
+          tag: `div`, flags: {class: `_gcQ`}, tagChild: [{
+            tag: `div`, flags: {class: `_eYG _MtX`}, closure: this.lapseString(txt.ptime)
+          }, {
+            tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{
+              tag: `div`, flags: {class: `_txe`},  closure: txt.txtstring}]
+            }]
+          };
+      } else {
+
+        node = {
+          tag: `div`, flags: {class: `_gcQ`}, tagChild: [{
+            tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+              tag: `div`, flags: {class: `_txw`},  closure: txt.txtstring
+            }]
+          }, {
+            tag: `div`, flags: {class: `_Bfa _QZg _MtX`}, closure: this.lapseString(txt.ptime)}]
+          }
+      }
+
+      listModel[index] = node;
+    });
+
+    return {
+      tag: `span`, flags: {id: `skin-root`}, tagChild: [this.controlsModel(), {
+        tag: `div`, flags: {class: `_aGX`}, tagChild: [{
+          tag: `div`, flags: {class: `_gHm`}, tagChild: [{
+            tag: `div`, flags: {class: `_gC_a`}, tagChild: [{
+              tag: `div`, flags: {class: `_gcQ _gMB`}, tagChild: [{
+                tag: `span`, flags: {class: `_VPH`, style: `width: 40px; height: 40px`}, tagChild: [{
+                  tag: `img`, flags: {src: ``, alt: ``}
+                }]
+              }, {
+                tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+                  tag: `div`, flags: {class: `_QxM`}, tagChild: [{
+                    tag: `span`, flags: {class: `_TZx _TXs`}, closure: `Betty Braun`}]
+                }, {
+                  tag: `span`, flags: {class: `_uHt`},  closure: `Active now`}]
+              }, {
+                tag: `div`, flags: {class: `_Bfa _QZg`}, tagChild: [{
+                  tag: `div`, flags: {class: `_gM_a _agM`}, tagChild: [{
+                    tag: `a`, flags: {class: `_TX_a _atX`, href: `#`}, closure: `Video Call`}]
+                }]
+              }]
+            }]
+          }]
+        }, {
+          tag: `div`, flags: {class: `_gHm`, style: `background: transparent;`}, tagChild: [{
+            tag: `div`, flags: {class: `_gC_a`}, tagChild: listModel
+          }]
+        }, {
+          tag: `div`, flags: {class: `_gHm _aGX _-gs`}, tagChild: [{
+            tag: `div`, flags: {class: `_gMB`}, tagChild: [{
+              tag: `div`, flags: {class: `_gMB _gcQ`}, tagChild: [{
+                tag: `a`, flags: {class: `_cCq`, style: `width: 30px; height: 30px`}, tagChild: [{
+                  tag: `img`, flags: {class: `_mgQ`, src: ``, alt: ``}}]
+              }, {
+                tag: `div`, flags: {class: `_eYG`}, tagChild: [{
+                  tag: `textarea`, flags: {class: `_TxA`, autocomplete: `off`, placeholder: `Type text here`}
+                }]
+              }]
+            }, {
+              tag: `div`, flags: {class: `_gMB _gcQ`}, tagChild: [{
+                tag: `button`, flags: {twineSum: mapping.twineSum, class: `_bsZ`}, closure: `send`
+              }]
+            }]
+          }]
+        }]
+      }, {tag: `script`, flags: {type: `text/javascript`}, closure: `sessionStorage.setItem('twineStack', '${mapping.twineSums}')`}, {
+        tag: `script`, flags: {src: `/public/gp/js/twine-active.js`}}, {
+          tag: `script`, flags: {src: `/public/gp/js/twine-sdk.js`}
       }]
     }
   }

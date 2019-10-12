@@ -38,7 +38,45 @@ class Util2 {
     this.electSub_ = electSub; console.log(this.electSub_)
     return this.electSub_;
   }
-  
+
+  lapseString (time) {
+
+    let then = new Date(parseInt(time)), lapse = (new Date - then)/1000, lapseString;
+
+    if (lapse < 86400*5) {
+
+      if (lapse >= 0) lapseString = Math.floor(lapse) + ` second`;
+
+      if (lapse >= 60) lapseString = Math.floor(lapse/60) + ` minute`;
+
+      if (lapse >= 3600) lapseString = Math.floor(lapse/3600) + ` hour`;
+
+      if (lapse >= 86400) lapseString = Math.floor(lapse/86400) + ` day`;
+
+      if (parseInt(lapseString) >= 2) lapseString = `${lapseString}s`;
+
+      lapseString += ` ago`;
+    } else {
+
+      let listMonths = [
+        `January`,
+        `February`,
+        `March`,
+        `April`,
+        `May`,
+        `June`,
+        `July`,
+        `August`,
+        `September`,
+        `October`,
+        `November`,
+        `December`];
+
+      lapseString = then.getDate() + ` ` + listMonths[then.getMonth()] + ` ` + then.getFullYear();
+    }
+    
+    return lapseString;
+  }
 }
 
 class SQL extends Util2 {
@@ -143,6 +181,8 @@ class UACallsPublic extends Util2 {
     if (this.levelState === `twine`) this.twineCall();
 
     if (this.levelState === `mug`) this.mugCall();
+
+    if (this.levelState === `pools`) this.poolsCall();
   }
 
   handleRootCall () {
@@ -324,6 +364,36 @@ class UACallsPublic extends Util2 {
       });
     });
   }
+
+  poolsCall () {
+
+    const cJar = cookie.parse(this.UA.req.headers.cookie);
+
+    if (!cJar.UAAuthorized) return;
+
+    this.modelStyler(config.CSSDeck + `user.css`, styleString => {
+
+      new SQL().SqlsMultiVar({
+        [`accepts_` + cJar.UAAuthorized]: `tab`, 
+        [`users`]: `tab_2`, 
+        [`idsum`]: `field`}, config.SqlQuery.tabCross, (A, B, C) => {
+
+          let modelMapping = { 
+            title: `Matches`,
+            styleText: styleString,
+            UACookie: cJar.UAAuthorized,
+            poolsStack: B
+          };
+
+          modelMapping[`appendModel`] = [modeler.poolsModel(modelMapping)];
+          modelMapping[`appendModel`] = [modeler.controlsModel(), modeler.contentModel(modelMapping)];
+          modelMapping[`appendModel`] = modeler.cookieModel(modelMapping);
+
+          this.UA.res.writeHead(200, config.electMimeTypes.html);
+          this.UA.res.end(modeler.callFrame(modelMapping))
+      });
+    });
+  }
 }
 
 class UAStreamQuery {
@@ -368,7 +438,15 @@ class UAStreamQuery {
 
     if (this.qString.twineVerify) {
       this.twineVerify(JSON.parse(this.qString.twineVerify));
-    }    
+    }
+
+    if (this.qString.iniMessage) {
+      this.iniPoolMessage(JSON.parse(this.qString.iniMessage));
+    }  
+
+    if (this.qString.textMail) {
+      this.textMail(JSON.parse(this.qString.textMail));
+    }   
   }
 
   passValid (QString) {
@@ -539,7 +617,9 @@ class UAStreamQuery {
                   recoSum = B[i].idsum; console.log(recoSum)
                   //indexRandom = (Math.floor(Math.random() * index) + 1)
                   let localServerTime = new Date().valueOf();
+
                   let localServerTimeSum = crypto.createHash(`md5`).update(`${localServerTime}`, `utf8`).digest(`hex`);
+
                   new SQL().SqlCommit([`temp_users`, {
                     altid: listSqlVar[`mailTo`],
                     btime: localServerTime,
@@ -686,6 +766,64 @@ class UAStreamQuery {
           });
       });
   }
+
+  iniPoolMessage (QString) {
+
+    let cJar = cookie.parse(this.UA.req.headers.cookie);
+
+    if (!cJar.UAAuthorized) return;
+
+    new SQL().SqlPlus({
+      table: `textchain_` + QString[`twineSum`],
+      field: `idsum`,
+      fieldValue: QString[`mailSum`]}, (A, B, C) => {
+
+        let txtStack = B;
+
+        new SQL().SqlPlus({
+          table: `textchain_` + QString[`mailSum`],
+          field: `idsum`,
+          fieldValue: QString[`twineSum`]}, (A, B, C) => {
+
+            txtStack = txtStack.concat(B); console.log(txtStack);
+
+            if (txtStack.length > 0) {
+
+              txtStack.sort((a,b) => {
+                return (a.ptime - b.ptime)});
+            }
+
+            let modelMapping = {
+              twineStack: txtStack,
+              mailSum: QString[`mailSum`],
+              twineSum: QString[`twineSum`],
+              twineSums: JSON.stringify({
+                mailSum: QString[`mailSum`],
+                twineSum: QString[`twineSum`]})};
+
+            this.UA.res.writeHead(200, config.electMimeTypes.json);
+            this.UA.res.end(JSON.stringify([modeler.poolTextModel(modelMapping)]));
+          });
+      });
+  }
+
+  textMail (QString) {
+
+    let cJar = cookie.parse(this.UA.req.headers.cookie);
+
+    if (!cJar.UAAuthorized) return;
+
+    let localServerTime = new Date().valueOf();
+
+    let localServerTimeSum = crypto.createHash(`md5`).update(`${localServerTime}`, `utf8`).digest(`hex`);
+
+    new SQL().SqlCommit([`textchain_` + QString[`mailSum`], {
+      idsum: QString[`twineSum`],
+      ptime: localServerTime,
+      idsum2: QString[`mailSum`],
+      txtstring: QString[`mail`],
+      txtstring_hash: localServerTimeSum}], (A, B, C) => this.iniPoolMessage(QString));
+  }
 }
 
 class blobViaHttps {
@@ -743,5 +881,7 @@ module.exports = {
   },
   Mysql () {
     new SQL().SqlSource();
-  }
+  },
+
+  lapse: (time) => new Util2().lapseString(time),
 };
